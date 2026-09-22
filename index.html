@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Pair Up!</title>
 <style>
 :root {
@@ -13,6 +16,7 @@
   --danger: #ef4444;
   --danger-bg: #fee2e2;
   --danger-ink: #991b1b;
+  --brand: #2563eb;
 }
 * { box-sizing: border-box; }
 body {
@@ -24,18 +28,18 @@ body {
 main {
   position: relative;
   width: min(1180px, 96vw);
-  margin: 22px auto;
+  margin: 18px auto;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 26px;
+  border-radius: 20px;
+  padding: 22px;
   box-shadow: 0 16px 45px #14203a12;
 }
-h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.2rem); }
-.sub { color: var(--muted); margin: 4px 0 18px; }
-.class-picker { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
+.sub { color: var(--muted); margin: 4px 0 16px; font-size: 0.95rem; }
+.class-picker { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
 .class-btn {
-  min-width: 145px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,86 +47,86 @@ h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.2rem); }
   gap: 3px;
   background: var(--class-colour, #fff);
   color: var(--ink);
-  font-size: 1rem;
+  font-size: 0.95rem;
   border: 3px solid var(--ink);
   box-shadow: 0 4px 10px #14203a12;
   cursor: pointer;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 12px;
 }
-.class-code { font-size: 1.08rem; font-weight: 900; }
+.class-code { font-size: 1.05rem; font-weight: 900; }
 .teacher-names { font-size: .72rem; font-weight: 700; opacity: .72; white-space: nowrap; }
 .class-btn.active { outline: 4px solid var(--ink); outline-offset: 2px; transform: translateY(-1px); }
-.controls { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-.empty-state { width: 100%; padding: 60px 20px; text-align: center; color: var(--muted); font-size: 1.15rem; font-weight: 700; }
-label { font-size: .88rem; font-weight: 800; }
-select, button { height: 46px; border-radius: 11px; border: 1px solid var(--line); font: inherit; font-weight: 750; }
-select { display: block; margin-top: 5px; padding: 0 14px; background: #fff; }
-button { padding: 0 18px; background: var(--ink); color: #fff; cursor: pointer; }
+.controls { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.empty-state { width: 100%; padding: 50px 20px; text-align: center; color: var(--muted); font-size: 1.15rem; font-weight: 700; }
+label { font-size: .85rem; font-weight: 800; }
+select, button { height: 44px; border-radius: 10px; border: 1px solid var(--line); font: inherit; font-weight: 750; }
+select { display: block; margin-top: 4px; padding: 0 12px; background: #fff; }
+button { padding: 0 16px; background: var(--ink); color: #fff; cursor: pointer; }
 .secondary { background: #fff; color: var(--ink); }
 button:disabled { opacity: .4; cursor: not-allowed; }
-#status { min-height: 27px; margin: 17px 0 8px; color: var(--muted); font-weight: 650; }
-#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; padding: 20px 0; }
+#status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; }
+#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; }
 .student {
-  min-width: 135px;
-  min-height: 82px;
-  padding: 12px 18px;
-  border-radius: 41px;
+  min-width: 130px;
+  min-height: 76px;
+  padding: 10px 16px;
+  border-radius: 38px;
   display: grid;
   place-items: center;
   text-align: center;
   background: var(--c);
   border: 3px solid var(--ink);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 850;
   box-shadow: 0 5px 14px #14203a18;
   user-select: none;
 }
 .student.selectable { cursor: pointer; }
 .student.absent { filter: grayscale(1); opacity: .3; text-decoration: line-through; }
-.student.chosen { transform: scale(1.38); z-index: 5; box-shadow: 0 10px 28px #14203a40; outline: 5px solid #fff; transition: transform .22s ease, box-shadow .22s ease; }
-.dice { font-size: 1.35rem; min-width: 52px; padding: 0 12px; }
-.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 15px; min-width: 300px; text-align: center; background: #fafbfc; }
+.student.chosen { transform: scale(1.35); z-index: 5; box-shadow: 0 10px 28px #14203a40; outline: 5px solid #fff; transition: transform .22s ease, box-shadow .22s ease; }
+.dice { font-size: 1.3rem; min-width: 50px; padding: 0 10px; }
+.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; }
 .pairlabel, .timer-label, .desk-label { font-size: .72rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
 .people, .desk-people { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.pairlabel { margin-bottom: 9px; }
+.pairlabel { margin-bottom: 8px; }
 .timer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line); }
 .room-timer {
   position: absolute;
-  right: 24px;
-  top: 70px;
-  width: 140px;
-  padding: 12px 10px;
+  right: 20px;
+  top: 65px;
+  width: 135px;
+  padding: 10px 8px;
   border: 2px solid var(--line);
-  border-radius: 16px;
+  border-radius: 14px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   box-shadow: 0 5px 14px #14203a12;
   z-index: 20;
 }
-.room-timer-label { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; font-weight: 850; color: var(--muted); }
-.room-clock { font-size: 1.8rem; font-weight: 900; font-variant-numeric: tabular-nums; }
-.room-timer-buttons { display: flex; flex-direction: column; width: 100%; gap: 6px; }
-.room-timer-buttons button { width: 100%; padding: 6px 4px; height: 32px; background: #fff; color: var(--ink); font-size: .8rem; }
-.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 18px; padding: 20px; border-top: 1px solid var(--line); }
-.discussion-title { font-size: .78rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
-.discussion-question { width: min(900px, 100%); min-height: 92px; display: grid; place-items: center; text-align: center; padding: 18px 24px; border-radius: 16px; background: #f8fafc; border: 2px solid var(--line); font-size: clamp(1.2rem, 2.2vw, 1.8rem); font-weight: 800; line-height: 1.3; }
+.room-timer-label { text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; font-weight: 850; color: var(--muted); }
+.room-clock { font-size: 1.75rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+.room-timer-buttons { display: flex; flex-direction: column; width: 100%; gap: 5px; }
+.room-timer-buttons button { width: 100%; padding: 4px; height: 30px; background: #fff; color: var(--ink); font-size: .78rem; }
+.discussion { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 16px; padding: 16px; border-top: 1px solid var(--line); }
+.discussion-title { font-size: .75rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
+.discussion-question { width: min(900px, 100%); min-height: 85px; display: grid; place-items: center; text-align: center; padding: 14px 20px; border-radius: 14px; background: #f8fafc; border: 2px solid var(--line); font-size: clamp(1.15rem, 2.1vw, 1.7rem); font-weight: 800; line-height: 1.3; }
 .discussion button { background: #fff; color: var(--ink); }
-.timerBtns { display: flex; gap: 9px; }
-.timerBtns button { height: 40px; background: #fff; color: var(--ink); }
-#clock { font-size: 2.35rem; font-weight: 900; font-variant-numeric: tabular-nums; min-height: 42px; }
+.timerBtns { display: flex; gap: 8px; }
+.timerBtns button { height: 38px; background: #fff; color: var(--ink); }
+#clock { font-size: 2.2rem; font-weight: 900; font-variant-numeric: tabular-nums; min-height: 40px; }
 .finished { animation: pulse .4s 4; }
 @keyframes pulse { 50% { transform: scale(1.13); } }
 #room {
   display: none;
   position: relative;
   width: 100%;
-  height: 650px;
+  height: 620px;
   border: 2px solid var(--ink);
-  border-radius: 18px;
+  border-radius: 16px;
   background: linear-gradient(#eef1f5 1px, transparent 1px), linear-gradient(90deg, #eef1f5 1px, transparent 1px), #fbfcfe;
   background-size: 32px 32px;
   overflow: hidden;
@@ -134,7 +138,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   left: 50%;
   transform: translateX(-50%);
   width: 46%;
-  height: 42px;
+  height: 40px;
   border-radius: 6px;
   background: #263442;
   color: #fff;
@@ -145,8 +149,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .desk {
   position: absolute;
-  width: 200px;
-  height: 108px;
+  width: 195px;
+  height: 105px;
   border: 2px solid #aeb7c5;
   border-radius: 14px;
   background: #fff;
@@ -157,13 +161,15 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   user-select: none;
   z-index: 10;
 }
 .desk:active { cursor: grabbing; }
-.desk .student { min-width: 86px; min-height: 50px; padding: 6px 8px; border-width: 2px; font-size: .88rem; }
-.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 9px; }
+.desk .student { min-width: 82px; min-height: 48px; padding: 5px 8px; border-width: 2px; font-size: .86rem; }
+.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; }
+
+/* Modal Setup */
 #setupDialog.modal-overlay {
   position: fixed;
   inset: 0;
@@ -172,57 +178,69 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 10px;
   overflow: auto;
 }
 #setupDialog .setupbox {
-  width: min(740px, 94vw);
-  max-height: 92vh;
-  overflow: auto;
+  width: min(740px, 96vw);
+  max-height: 94vh;
+  overflow-y: auto;
   background: #fff;
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 18px;
+  padding: 18px 22px;
   box-shadow: 0 20px 70px #17203355;
+  scroll-behavior: smooth;
 }
-.field { margin: 12px 0; }
-.field label { display: block; font-weight: 850; margin-bottom: 5px; }
-.field input, .field textarea, .field select { width: 100%; padding: 11px; border: 2px solid #dce2ea; border-radius: 10px; font: inherit; }
-.field textarea { min-height: 130px; resize: vertical; }
-.savedrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px; background: #f5f7fa; border-radius: 10px; margin: 7px 0; }
+.field { margin: 10px 0; }
+.field label { display: block; font-weight: 850; margin-bottom: 4px; font-size: 0.85rem; }
+.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 2px solid #dce2ea; border-radius: 8px; font: inherit; }
+.field textarea { min-height: 110px; resize: vertical; }
+.savedrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; background: #f5f7fa; border-radius: 8px; margin: 6px 0; }
 .small { font-size: .8rem; color: #687386; }
 .modalbuttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
-.backup-bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 16px; }
-.backup-bar button { height: 38px; font-size: .85rem; padding: 0 12px; }
-#staffSetup { position: absolute; right: 24px; top: 24px; }
+.backup-bar { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
+.backup-bar button { height: 34px; font-size: .8rem; padding: 0 10px; }
+#staffSetup { position: absolute; right: 22px; top: 22px; }
 
-/* Separation rules UI */
-.restriction-box {
-  background: #fbfcfe;
-  border: 2px dashed #cbd5e1;
-  border-radius: 14px;
+/* Separation rules block */
+.editor-card {
+  background: #fdfefe;
+  border: 2px solid #dce2ea;
+  border-radius: 12px;
   padding: 14px;
-  margin-top: 14px;
+  margin: 14px 0;
+}
+.editor-card.is-editing {
+  border-color: var(--brand);
+  background: #f8faff;
+}
+.restriction-box {
+  background: #fff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 10px;
 }
 .toggle-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 10px;
-  max-height: 180px;
+  gap: 6px;
+  margin-top: 8px;
+  max-height: 160px;
   overflow-y: auto;
   padding: 4px 2px;
 }
 .restrict-chip {
-  padding: 7px 12px;
-  border-radius: 20px;
-  font-size: 0.86rem;
+  padding: 6px 11px;
+  border-radius: 18px;
+  font-size: 0.82rem;
   font-weight: 750;
   cursor: pointer;
   border: 2px solid #dce2ea;
   background: #fff;
   color: var(--ink);
   user-select: none;
-  transition: all .15s ease;
+  transition: all .12s ease;
 }
 .restrict-chip.banned {
   background: var(--danger-bg);
@@ -233,17 +251,17 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 .banned-tag {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 4px 10px;
-  border-radius: 14px;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 12px;
   background: #f1f5f9;
   border: 1px solid #cbd5e1;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 750;
 }
 .banned-tag button {
@@ -251,8 +269,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   border: none;
   color: var(--danger);
   cursor: pointer;
-  font-size: 1.05rem;
-  padding: 0 2px;
+  font-size: 1rem;
+  padding: 0;
   height: auto;
   line-height: 1;
 }
@@ -310,17 +328,63 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   <div id="hint" class="hint"></div>
 
   <div id="setupDialog" class="modal-overlay" style="display:none">
-    <div class="setupbox">
-      <h2>Staff Setup</h2>
-      <div class="field">
+    <div class="setupbox" id="setupScrollBox">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="margin:0;">Staff Setup</h2>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v2.4</span>
+      </div>
+
+      <div class="field" style="margin-top:12px;">
         <label for="teacherName">Your title and surname</label>
         <input id="teacherName" placeholder="e.g. Mr Gore">
         <div class="small">This becomes “Mr Gore says Pair Up!”</div>
       </div>
 
-      <hr>
+      <hr style="margin:14px 0; border:none; border-top:1px solid var(--line);">
 
-      <h3>Backup & Restore</h3>
+      <!-- CLASS EDITOR CARD -->
+      <div id="classEditorSection" class="editor-card">
+        <h3 id="classEditorTitle" style="margin:0 0 10px 0; color:var(--ink);">Add a class</h3>
+        
+        <div class="field">
+          <label for="classCode">Class name / code</label>
+          <input id="classCode" placeholder="e.g. 12A FM">
+        </div>
+        <div class="field">
+          <label for="classTeachers">Teacher name(s) shown below the class</label>
+          <input id="classTeachers" placeholder="e.g. Mr Gore and Miss Ford">
+        </div>
+        <div class="field">
+          <label for="studentNames">Student names — one per line</label>
+          <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
+        </div>
+
+        <!-- PAIRING OMISSIONS (DO NOT PAIR) -->
+        <div class="restriction-box" id="omissionsBox">
+          <label style="color:#b91c1c;">🚫 Pairing Omissions / Do Not Pair</label>
+          <div class="small" style="margin-bottom:6px">Tap any student below to forbid them from being paired together:</div>
+          
+          <div style="display:flex; align-items:center; gap:8px; margin: 6px 0;">
+            <span class="small" style="font-weight:700;">Student:</span>
+            <select id="restrictStudentSelect" style="flex:1; margin-top:0; height:38px;"></select>
+          </div>
+
+          <div id="restrictToggleGrid" class="toggle-grid"></div>
+          <div id="restrictSummary" class="banned-summary"></div>
+        </div>
+
+        <div class="modalbuttons" style="margin-top:14px;">
+          <button id="saveClass" type="button">Save Class</button>
+          <button id="clearClassForm" class="secondary" type="button">Cancel / Clear</button>
+        </div>
+      </div>
+
+      <h3 style="margin:16px 0 6px 0;">Saved Classes</h3>
+      <div id="savedClasses"></div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid var(--line);">
+
+      <h4 style="margin:0 0 6px 0;">Backup &amp; Restore</h4>
       <div class="small" style="margin-bottom:8px">Google Sites can reset embedded data on refresh. Save a backup to guarantee you never lose your classes:</div>
       <div class="backup-bar">
         <button id="btnExport" class="secondary" type="button">📥 Download File</button>
@@ -330,40 +394,6 @@ button:disabled { opacity: .4; cursor: not-allowed; }
         <button id="btnPaste" class="secondary" type="button">📥 Paste Text Code</button>
       </div>
 
-      <hr>
-
-      <h3>Add or edit a class</h3>
-      <div class="field">
-        <label for="classCode">Class name / code</label>
-        <input id="classCode" placeholder="e.g. 12A FM">
-      </div>
-      <div class="field">
-        <label for="classTeachers">Teacher name(s) shown below the class</label>
-        <input id="classTeachers" placeholder="e.g. Mr Gore and Miss Ford">
-      </div>
-      <div class="field">
-        <label for="studentNames">Student names — one per line</label>
-        <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
-      </div>
-
-      <!-- Separation rules UI -->
-      <div class="restriction-box">
-        <label>🚫 Do Not Pair Rules (Optional)</label>
-        <div class="small" style="margin-bottom:8px">Select a student, then tap any classmate they should <b>never</b> be paired with:</div>
-        <select id="restrictStudentSelect">
-          <option value="">-- Select a student first --</option>
-        </select>
-        <div id="restrictToggleGrid" class="toggle-grid"></div>
-        <div id="restrictSummary" class="banned-summary"></div>
-      </div>
-
-      <div class="modalbuttons">
-        <button id="saveClass" type="button">Save Class</button>
-        <button id="clearClassForm" class="secondary" type="button">Clear</button>
-      </div>
-
-      <h3 style="margin-top:20px;">Saved classes</h3>
-      <div id="savedClasses"></div>
       <div class="modalbuttons">
         <button id="closeSetup" type="button">Done</button>
       </div>
@@ -596,13 +626,11 @@ function shuffle(a) {
 function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
   const isBanned = (a, b) => bannedSet.has(pairKey(a, b));
 
-  // Loop attempts: if any dead end occurs, it immediately re-pairs everyone from scratch
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     let pool = shuffle([...students]);
     let resultGroups = [];
     let failed = false;
 
-    // Handle odd number of students (one trio)
     if (pool.length % 2 === 1 && pool.length >= 3) {
       let trioFound = false;
       let indices = shuffle([...Array(pool.length).keys()]);
@@ -624,13 +652,9 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
         if (trioFound) break;
       }
 
-      if (!trioFound) {
-        // Dead end on trio: restart and re-pair everyone
-        continue;
-      }
+      if (!trioFound) continue;
     }
 
-    // Pair up remaining students
     while (pool.length >= 2) {
       let first = pool.pop();
       let candidateIndices = shuffle([...Array(pool.length).keys()]);
@@ -644,10 +668,8 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
       }
 
       if (matchIdx === -1) {
-        // Dead end: someone has no valid partner left in this run.
-        // Immediately trigger complete re-pair of everyone!
         failed = true;
-        break;
+        break; // Auto-retry without showing an alert
       }
 
       let second = pool.splice(matchIdx, 1)[0];
@@ -655,11 +677,11 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
     }
 
     if (!failed && pool.length === 0) {
-      return resultGroups; // Successfully paired without violations!
+      return resultGroups;
     }
   }
 
-  // Graceful fallback if mathematically impossible (no alerts)
+  // Graceful fallback if mathematically impossible
   let fallback = shuffle([...students]);
   let groups = [];
   if (fallback.length % 2 && fallback.length >= 3) groups.push(fallback.splice(0, 3));
@@ -678,7 +700,6 @@ function pairup() {
   const rawBanned = (STAFF.classes[currentClass] && STAFF.classes[currentClass].bannedPairs) || [];
   const bannedSet = new Set(rawBanned.map(([a, b]) => pairKey(a, b)));
 
-  // Solve without showing any error popup
   groups = solvePairingsWithAutoRetry(present, bannedSet);
   pairs();
   arrange.disabled = !groups.length;
@@ -704,7 +725,7 @@ function key() {
 }
 
 function defaultPos(n) {
-  let a = [], w = room.clientWidth || 800, dw = 200;
+  let a = [], w = room.clientWidth || 800, dw = 195;
   let cols = w < 700 ? 2 : Math.min(4, Math.max(2, n));
   let gx = Math.max(8, (w - (cols * dw)) / (cols + 1));
   for (let i = 0; i < n; i++) {
@@ -959,18 +980,26 @@ function getFormStudents() {
   return qs('#studentNames').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
 }
 
-function updateRestrictStudentDropdown() {
+function updateRestrictStudentDropdown(preferredStudent = '') {
   const sel = qs('#restrictStudentSelect');
-  const prevVal = sel.value;
   const students = getFormStudents();
-  sel.innerHTML = '<option value="">-- Select a student first --</option>';
+  sel.innerHTML = '<option value="">-- Choose student to set rules --</option>';
+  
   students.forEach(name => {
     let opt = document.createElement('option');
     opt.value = name;
     opt.textContent = name;
-    if (name === prevVal) opt.selected = true;
     sel.appendChild(opt);
   });
+
+  if (preferredStudent && students.includes(preferredStudent)) {
+    sel.value = preferredStudent;
+  } else if (students.length > 0) {
+    sel.value = students[0]; // Auto-select 1st student so options are immediately visible
+  } else {
+    sel.value = '';
+  }
+
   renderRestrictionGrid();
   renderRestrictionSummary();
 }
@@ -979,9 +1008,17 @@ function renderRestrictionGrid() {
   const grid = qs('#restrictToggleGrid');
   grid.innerHTML = '';
   const current = qs('#restrictStudentSelect').value;
-  if (!current) return;
+  if (!current) {
+    grid.innerHTML = '<span class="small" style="padding:6px 0;">Add student names above to configure omissions.</span>';
+    return;
+  }
 
   const students = getFormStudents().filter(n => n !== current);
+  if (!students.length) {
+    grid.innerHTML = '<span class="small" style="padding:6px 0;">Add at least 2 students to set pairing omissions.</span>';
+    return;
+  }
+
   students.forEach(other => {
     let pk = pairKey(current, other);
     let isBanned = editingBannedPairs.has(pk);
@@ -1027,7 +1064,7 @@ function renderRestrictionSummary() {
 }
 
 qs('#restrictStudentSelect').onchange = renderRestrictionGrid;
-qs('#studentNames').oninput = updateRestrictStudentDropdown;
+qs('#studentNames').oninput = () => updateRestrictStudentDropdown(qs('#restrictStudentSelect').value);
 
 function clearForm() {
   qs('#classCode').value = '';
@@ -1035,6 +1072,8 @@ function clearForm() {
   qs('#studentNames').value = '';
   delete qs('#classCode').dataset.old;
   editingBannedPairs.clear();
+  qs('#classEditorTitle').textContent = 'Add a class';
+  qs('#classEditorSection').classList.remove('is-editing');
   updateRestrictStudentDropdown();
 }
 
@@ -1050,7 +1089,7 @@ function renderSaved() {
     let r = document.createElement('div');
     r.className = 'savedrow';
     let countRules = (v.bannedPairs || []).length;
-    let ruleText = countRules ? ` · <span style="color:var(--danger)">${countRules} banned pair${countRules > 1 ? 's' : ''}</span>` : '';
+    let ruleText = countRules ? ` · <span style="color:var(--danger)">${countRules} omission${countRules > 1 ? 's' : ''}</span>` : '';
     let info = document.createElement('div');
     info.innerHTML = `<b>${k}</b><div class="small">${v.teachers || ''} · ${v.students.length} students${ruleText}</div>`;
     let acts = document.createElement('div');
@@ -1068,7 +1107,17 @@ function renderSaved() {
       qs('#studentNames').value = v.students.join('\n');
       qs('#classCode').dataset.old = k;
       editingBannedPairs = new Set((v.bannedPairs || []).map(([a, b]) => pairKey(a, b)));
-      updateRestrictStudentDropdown();
+      
+      // Update UI state and auto-select first student
+      qs('#classEditorTitle').textContent = `✏️ Editing Class: ${k}`;
+      qs('#classEditorSection').classList.add('is-editing');
+      updateRestrictStudentDropdown(v.students[0] || '');
+
+      // Smoothly scroll straight up to the editor & omissions box
+      const target = qs('#classEditorSection');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     };
     d.onclick = () => {
       delete STAFF.classes[k];
