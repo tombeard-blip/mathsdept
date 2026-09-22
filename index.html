@@ -10,6 +10,9 @@
   --muted: #667085;
   --line: #d9dee8;
   --bg: #f5f7fb;
+  --danger: #ef4444;
+  --danger-bg: #fee2e2;
+  --danger-ink: #991b1b;
 }
 * { box-sizing: border-box; }
 body {
@@ -183,14 +186,76 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .field { margin: 12px 0; }
 .field label { display: block; font-weight: 850; margin-bottom: 5px; }
-.field input, .field textarea { width: 100%; padding: 11px; border: 2px solid #dce2ea; border-radius: 10px; font: inherit; }
-.field textarea { min-height: 140px; resize: vertical; }
+.field input, .field textarea, .field select { width: 100%; padding: 11px; border: 2px solid #dce2ea; border-radius: 10px; font: inherit; }
+.field textarea { min-height: 130px; resize: vertical; }
 .savedrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px; background: #f5f7fa; border-radius: 10px; margin: 7px 0; }
 .small { font-size: .8rem; color: #687386; }
 .modalbuttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
 .backup-bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 16px; }
 .backup-bar button { height: 38px; font-size: .85rem; padding: 0 12px; }
 #staffSetup { position: absolute; right: 24px; top: 24px; }
+
+/* Separation rules UI */
+.restriction-box {
+  background: #fbfcfe;
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 14px;
+}
+.toggle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 4px 2px;
+}
+.restrict-chip {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 0.86rem;
+  font-weight: 750;
+  cursor: pointer;
+  border: 2px solid #dce2ea;
+  background: #fff;
+  color: var(--ink);
+  user-select: none;
+  transition: all .15s ease;
+}
+.restrict-chip.banned {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger-ink);
+}
+.banned-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.banned-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+.banned-tag button {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 1.05rem;
+  padding: 0 2px;
+  height: auto;
+  line-height: 1;
+}
 </style>
 </head>
 <body>
@@ -278,8 +343,20 @@ button:disabled { opacity: .4; cursor: not-allowed; }
       </div>
       <div class="field">
         <label for="studentNames">Student names — one per line</label>
-        <textarea id="studentNames"></textarea>
+        <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
       </div>
+
+      <!-- Separation rules UI -->
+      <div class="restriction-box">
+        <label>🚫 Do Not Pair Rules (Optional)</label>
+        <div class="small" style="margin-bottom:8px">Select a student, then tap any classmate they should <b>never</b> be paired with:</div>
+        <select id="restrictStudentSelect">
+          <option value="">-- Select a student first --</option>
+        </select>
+        <div id="restrictToggleGrid" class="toggle-grid"></div>
+        <div id="restrictSummary" class="banned-summary"></div>
+      </div>
+
       <div class="modalbuttons">
         <button id="saveClass" type="button">Save Class</button>
         <button id="clearClassForm" class="secondary" type="button">Clear</button>
@@ -345,7 +422,7 @@ const CookieEngine = {
   },
   set(name, value) {
     try {
-      if (value.length > 3800) return; // Prevent exceeding cookie limits
+      if (value.length > 3800) return;
       let d = new Date();
       d.setFullYear(d.getFullYear() + 2);
       document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=None; Secure`;
@@ -379,13 +456,11 @@ const StorageSafe = {
 const STORE = 'pairup-staff-v1';
 let STAFF = { teacher: "", classes: {} };
 
-// Attempt immediate synchronous load
 try {
   let loaded = StorageSafe.get(STORE);
   if (loaded) STAFF = JSON.parse(loaded);
 } catch(e) {}
 
-// Secondary async IndexedDB load (rescues data in restricted Google Sites iframe)
 (async () => {
   try {
     let idbData = await idbGet(STORE);
@@ -419,6 +494,12 @@ let currentClass = null;
 let absent = new Set();
 let groups = [];
 let chosen = null;
+
+let editingBannedPairs = new Set();
+
+function pairKey(a, b) {
+  return a < b ? `${a}:::${b}` : `${b}:::${a}`;
+}
 
 function renderClassButtons() {
   picker.innerHTML = '';
@@ -511,12 +592,94 @@ function shuffle(a) {
   return a;
 }
 
+/* --- Auto-Retrying Pairing Algorithm --- */
+function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
+  const isBanned = (a, b) => bannedSet.has(pairKey(a, b));
+
+  // Loop attempts: if any dead end occurs, it immediately re-pairs everyone from scratch
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    let pool = shuffle([...students]);
+    let resultGroups = [];
+    let failed = false;
+
+    // Handle odd number of students (one trio)
+    if (pool.length % 2 === 1 && pool.length >= 3) {
+      let trioFound = false;
+      let indices = shuffle([...Array(pool.length).keys()]);
+
+      for (let i = 0; i < indices.length - 2; i++) {
+        for (let j = i + 1; j < indices.length - 1; j++) {
+          for (let k = j + 1; k < indices.length; k++) {
+            let a = pool[indices[i]], b = pool[indices[j]], c = pool[indices[k]];
+            if (!isBanned(a, b) && !isBanned(a, c) && !isBanned(b, c)) {
+              resultGroups.push([a, b, c]);
+              let chosenSet = new Set([indices[i], indices[j], indices[k]]);
+              pool = pool.filter((_, idx) => !chosenSet.has(idx));
+              trioFound = true;
+              break;
+            }
+          }
+          if (trioFound) break;
+        }
+        if (trioFound) break;
+      }
+
+      if (!trioFound) {
+        // Dead end on trio: restart and re-pair everyone
+        continue;
+      }
+    }
+
+    // Pair up remaining students
+    while (pool.length >= 2) {
+      let first = pool.pop();
+      let candidateIndices = shuffle([...Array(pool.length).keys()]);
+      let matchIdx = -1;
+
+      for (let idx of candidateIndices) {
+        if (!isBanned(first, pool[idx])) {
+          matchIdx = idx;
+          break;
+        }
+      }
+
+      if (matchIdx === -1) {
+        // Dead end: someone has no valid partner left in this run.
+        // Immediately trigger complete re-pair of everyone!
+        failed = true;
+        break;
+      }
+
+      let second = pool.splice(matchIdx, 1)[0];
+      resultGroups.push([first, second]);
+    }
+
+    if (!failed && pool.length === 0) {
+      return resultGroups; // Successfully paired without violations!
+    }
+  }
+
+  // Graceful fallback if mathematically impossible (no alerts)
+  let fallback = shuffle([...students]);
+  let groups = [];
+  if (fallback.length % 2 && fallback.length >= 3) groups.push(fallback.splice(0, 3));
+  while (fallback.length) groups.push(fallback.splice(0, 2));
+  return groups;
+}
+
 function pairup() {
   chosen = null;
-  let a = shuffle(CLASSES[currentClass].filter(n => !absent.has(n)).slice());
-  groups = [];
-  if (a.length % 2 && a.length >= 3) groups.push(a.splice(0, 3));
-  while (a.length) groups.push(a.splice(0, 2));
+  const present = CLASSES[currentClass].filter(n => !absent.has(n));
+  if (present.length < 2) {
+    status.textContent = "Need at least 2 present students to pair.";
+    return;
+  }
+
+  const rawBanned = (STAFF.classes[currentClass] && STAFF.classes[currentClass].bannedPairs) || [];
+  const bannedSet = new Set(rawBanned.map(([a, b]) => pairKey(a, b)));
+
+  // Solve without showing any error popup
+  groups = solvePairingsWithAutoRetry(present, bannedSet);
   pairs();
   arrange.disabled = !groups.length;
 }
@@ -791,11 +954,88 @@ function refreshTitle() {
   document.title = qs('#mainTitle').textContent;
 }
 
+/* --- Separation Rules Setup UI --- */
+function getFormStudents() {
+  return qs('#studentNames').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+}
+
+function updateRestrictStudentDropdown() {
+  const sel = qs('#restrictStudentSelect');
+  const prevVal = sel.value;
+  const students = getFormStudents();
+  sel.innerHTML = '<option value="">-- Select a student first --</option>';
+  students.forEach(name => {
+    let opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    if (name === prevVal) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  renderRestrictionGrid();
+  renderRestrictionSummary();
+}
+
+function renderRestrictionGrid() {
+  const grid = qs('#restrictToggleGrid');
+  grid.innerHTML = '';
+  const current = qs('#restrictStudentSelect').value;
+  if (!current) return;
+
+  const students = getFormStudents().filter(n => n !== current);
+  students.forEach(other => {
+    let pk = pairKey(current, other);
+    let isBanned = editingBannedPairs.has(pk);
+
+    let chip = document.createElement('div');
+    chip.className = 'restrict-chip' + (isBanned ? ' banned' : '');
+    chip.textContent = `${other} ${isBanned ? '✕' : '+'}`;
+    chip.onclick = () => {
+      if (editingBannedPairs.has(pk)) {
+        editingBannedPairs.delete(pk);
+      } else {
+        editingBannedPairs.add(pk);
+      }
+      renderRestrictionGrid();
+      renderRestrictionSummary();
+    };
+    grid.appendChild(chip);
+  });
+}
+
+function renderRestrictionSummary() {
+  const sum = qs('#restrictSummary');
+  sum.innerHTML = '';
+  if (!editingBannedPairs.size) return;
+
+  const list = [...editingBannedPairs].map(pk => pk.split(':::'));
+  list.forEach(([a, b]) => {
+    let tag = document.createElement('div');
+    tag.className = 'banned-tag';
+    tag.innerHTML = `<span>🚫 ${a} & ${b}</span>`;
+    let btn = document.createElement('button');
+    btn.type = 'button';
+    btn.innerHTML = '&times;';
+    btn.title = 'Remove restriction';
+    btn.onclick = () => {
+      editingBannedPairs.delete(pairKey(a, b));
+      renderRestrictionGrid();
+      renderRestrictionSummary();
+    };
+    tag.appendChild(btn);
+    sum.appendChild(tag);
+  });
+}
+
+qs('#restrictStudentSelect').onchange = renderRestrictionGrid;
+qs('#studentNames').oninput = updateRestrictStudentDropdown;
+
 function clearForm() {
   qs('#classCode').value = '';
   qs('#classTeachers').value = '';
   qs('#studentNames').value = '';
   delete qs('#classCode').dataset.old;
+  editingBannedPairs.clear();
+  updateRestrictStudentDropdown();
 }
 
 function renderSaved() {
@@ -809,8 +1049,10 @@ function renderSaved() {
   entries.forEach(([k, v]) => {
     let r = document.createElement('div');
     r.className = 'savedrow';
+    let countRules = (v.bannedPairs || []).length;
+    let ruleText = countRules ? ` · <span style="color:var(--danger)">${countRules} banned pair${countRules > 1 ? 's' : ''}</span>` : '';
     let info = document.createElement('div');
-    info.innerHTML = `<b>${k}</b><div class="small">${v.teachers || ''} · ${v.students.length} students</div>`;
+    info.innerHTML = `<b>${k}</b><div class="small">${v.teachers || ''} · ${v.students.length} students${ruleText}</div>`;
     let acts = document.createElement('div');
     let e = document.createElement('button');
     let d = document.createElement('button');
@@ -825,6 +1067,8 @@ function renderSaved() {
       qs('#classTeachers').value = v.teachers || '';
       qs('#studentNames').value = v.students.join('\n');
       qs('#classCode').dataset.old = k;
+      editingBannedPairs = new Set((v.bannedPairs || []).map(([a, b]) => pairKey(a, b)));
+      updateRestrictStudentDropdown();
     };
     d.onclick = () => {
       delete STAFF.classes[k];
@@ -844,6 +1088,7 @@ function renderSaved() {
 qs('#staffSetup').onclick = () => {
   qs('#teacherName').value = STAFF.teacher || '';
   renderSaved();
+  updateRestrictStudentDropdown();
   qs('#setupDialog').style.display = 'flex';
 };
 
@@ -859,7 +1104,7 @@ qs('#clearClassForm').onclick = clearForm;
 qs('#saveClass').onclick = () => {
   let code = qs('#classCode').value.trim();
   let teachers = qs('#classTeachers').value.trim();
-  let students = qs('#studentNames').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  let students = getFormStudents();
   let old = qs('#classCode').dataset.old;
   if (!code || !students.length) {
     alert('Please enter a class name and at least one student.');
@@ -867,7 +1112,13 @@ qs('#saveClass').onclick = () => {
   }
   if (old && old !== code) delete STAFF.classes[old];
   if (!STAFF.classes) STAFF.classes = {};
-  STAFF.classes[code] = { teachers, students };
+
+  const validNames = new Set(students);
+  const cleanBannedPairs = [...editingBannedPairs]
+    .map(pk => pk.split(':::'))
+    .filter(([a, b]) => validNames.has(a) && validNames.has(b));
+
+  STAFF.classes[code] = { teachers, students, bannedPairs: cleanBannedPairs };
   persist();
   clearForm();
   renderClassButtons();
