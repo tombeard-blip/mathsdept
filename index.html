@@ -81,10 +81,27 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   font-weight: 850;
   box-shadow: 0 5px 14px #14203a18;
   user-select: none;
+  transition: opacity .2s ease, filter .2s ease;
 }
 .student.selectable { cursor: pointer; }
 .student.absent { filter: grayscale(1); opacity: .3; text-decoration: line-through; }
-.student.chosen { transform: scale(1.35); z-index: 5; box-shadow: 0 10px 28px #14203a40; outline: 5px solid #fff; transition: transform .22s ease, box-shadow .22s ease; }
+.student.called {
+  text-decoration: line-through;
+  text-decoration-thickness: 3.5px;
+  text-decoration-color: var(--danger);
+  opacity: 0.45;
+  filter: grayscale(0.7);
+}
+.student.chosen {
+  transform: scale(1.35);
+  z-index: 5;
+  box-shadow: 0 10px 28px #14203a40;
+  outline: 5px solid #fff;
+  transition: transform .22s ease, box-shadow .22s ease;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
 .dice { font-size: 1.3rem; min-width: 50px; padding: 0 10px; }
 .paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; }
 .pairlabel, .timer-label, .desk-label { font-size: .72rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
@@ -111,10 +128,30 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .room-clock { font-size: 1.75rem; font-weight: 900; font-variant-numeric: tabular-nums; }
 .room-timer-buttons { display: flex; flex-direction: column; width: 100%; gap: 5px; }
 .room-timer-buttons button { width: 100%; padding: 4px; height: 30px; background: #fff; color: var(--ink); font-size: .78rem; }
-.discussion { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 16px; padding: 16px; border-top: 1px solid var(--line); }
-.discussion-title { font-size: .75rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
-.discussion-question { width: min(900px, 100%); min-height: 85px; display: grid; place-items: center; text-align: center; padding: 14px 20px; border-radius: 14px; background: #f8fafc; border: 2px solid var(--line); font-size: clamp(1.15rem, 2.1vw, 1.7rem); font-weight: 800; line-height: 1.3; }
-.discussion button { background: #fff; color: var(--ink); }
+
+/* Discussion Questions Section */
+.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); }
+.discussion-title { font-size: .78rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
+.discussion-controls { width: min(900px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.cat-btn {
+  height: 38px;
+  padding: 0 14px;
+  font-size: 0.85rem;
+  font-weight: 750;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.cat-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.question-pickers { width: 100%; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.dropdown-wrapper { flex: 1; min-width: 260px; max-width: 650px; }
+.dropdown-wrapper select { width: 100%; height: 42px; font-size: 0.88rem; border-radius: 10px; border: 2px solid var(--line); }
+.discussion-question { width: min(900px, 100%); min-height: 85px; display: grid; place-items: center; text-align: center; padding: 16px 22px; border-radius: 14px; background: #f8fafc; border: 2px solid var(--line); font-size: clamp(1.15rem, 2.1vw, 1.65rem); font-weight: 800; line-height: 1.35; }
+
 .timerBtns { display: flex; gap: 8px; }
 .timerBtns button { height: 38px; background: #fff; color: var(--ink); }
 #clock { font-size: 2.2rem; font-weight: 900; font-variant-numeric: tabular-nums; min-height: 40px; }
@@ -306,10 +343,26 @@ button:disabled { opacity: .4; cursor: not-allowed; }
     </div>
   </section>
 
+  <!-- Discussion Questions Section -->
   <section id="discussion" class="discussion" style="display:none">
-    <div class="discussion-title">Discussion question</div>
-    <div id="discussionQuestion" class="discussion-question">Press the button for a discussion question.</div>
-    <button id="newQuestion" class="secondary" type="button">💬 New Discussion Question</button>
+    <div class="discussion-title">Discussion Questions</div>
+    
+    <div class="discussion-controls">
+      <div class="category-tabs">
+        <button class="cat-btn active" data-cat="maths" type="button">📐 Maths Related</button>
+        <button class="cat-btn" data-cat="general" type="button">📚 Study &amp; College Life</button>
+        <button class="cat-btn" data-cat="individual" type="button">🌱 Personal &amp; Mindset</button>
+      </div>
+
+      <div class="question-pickers">
+        <div class="dropdown-wrapper">
+          <select id="questionSelect"></select>
+        </div>
+        <button id="newQuestion" class="secondary" type="button">🎲 Random from Category</button>
+      </div>
+    </div>
+
+    <div id="discussionQuestion" class="discussion-question">Select a question or press Random above.</div>
   </section>
 
   <section id="room">
@@ -331,7 +384,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
     <div class="setupbox" id="setupScrollBox">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="margin:0;">Staff Setup</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">v2.4</span>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v2.5</span>
       </div>
 
       <div class="field" style="margin-top:12px;">
@@ -359,7 +412,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
           <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
         </div>
 
-        <!-- PAIRING OMISSIONS (DO NOT PAIR) -->
+        <!-- PAIRING OMISSIONS -->
         <div class="restriction-box" id="omissionsBox">
           <label style="color:#b91c1c;">🚫 Pairing Omissions / Do Not Pair</label>
           <div class="small" style="margin-bottom:6px">Tap any student below to forbid them from being paired together:</div>
@@ -522,6 +575,7 @@ let CLASSES = {};
 let TEACHERS = {};
 let currentClass = null;
 let absent = new Set();
+let called = new Set(); // Stores students who have already been randomly chosen & crossed out
 let groups = [];
 let chosen = null;
 
@@ -556,6 +610,7 @@ function renderClassButtons() {
 function blank() {
   currentClass = null;
   absent = new Set();
+  called = new Set();
   groups = [];
   chosen = null;
   document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
@@ -576,6 +631,7 @@ function blank() {
 function selectClass(name, button) {
   currentClass = name;
   absent = new Set();
+  called = new Set();
   groups = [];
   chosen = null;
   document.querySelectorAll('.class-btn').forEach(b => b.classList.toggle('active', b === button));
@@ -588,12 +644,28 @@ function selectClass(name, button) {
 function chip(n, small = false, click = false) {
   let i = CLASSES[currentClass] ? CLASSES[currentClass].indexOf(n) : 0;
   let e = document.createElement('div');
-  e.className = 'student' + (click ? ' selectable' : '') + (absent.has(n) ? ' absent' : '') + (chosen === n ? ' chosen' : '');
+  let isAbs = absent.has(n);
+  let isCalled = called.has(n);
+  let isChosen = (chosen === n);
+
+  e.className = 'student' 
+    + (click ? ' selectable' : '') 
+    + (isAbs ? ' absent' : '') 
+    + (isCalled && !isChosen ? ' called' : '')
+    + (isChosen ? ' chosen' : '');
+
   e.textContent = n;
   e.style.setProperty('--c', colours[(i >= 0 ? i : 0) % colours.length]);
+  
   if (click) {
     e.onclick = () => {
-      absent.has(n) ? absent.delete(n) : absent.add(n);
+      if (absent.has(n)) {
+        absent.delete(n);
+      } else {
+        absent.add(n);
+        called.delete(n);
+        if (chosen === n) chosen = null;
+      }
       roster();
     };
   }
@@ -669,7 +741,7 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
 
       if (matchIdx === -1) {
         failed = true;
-        break; // Auto-retry without showing an alert
+        break;
       }
 
       let second = pool.splice(matchIdx, 1)[0];
@@ -681,7 +753,6 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
     }
   }
 
-  // Graceful fallback if mathematically impossible
   let fallback = shuffle([...students]);
   let groups = [];
   if (fallback.length % 2 && fallback.length >= 3) groups.push(fallback.splice(0, 3));
@@ -691,6 +762,7 @@ function solvePairingsWithAutoRetry(students, bannedSet, maxAttempts = 300) {
 
 function pairup() {
   chosen = null;
+  called.clear();
   const present = CLASSES[currentClass].filter(n => !absent.has(n));
   if (present.length < 2) {
     status.textContent = "Need at least 2 present students to pair.";
@@ -805,107 +877,213 @@ function drag(e) {
 function clearGroups() {
   groups = [];
   chosen = null;
+  called.clear();
   arrange.disabled = true;
   roster();
   status.textContent = `${CLASSES[currentClass].length - absent.size} present — groupings cleared.`;
 }
 
+/* --- Random Student Picker with Strikethroughs --- */
 function randomStudent() {
   const present = CLASSES[currentClass].filter(n => !absent.has(n));
   if (!present.length) return;
-  let pool = present.filter(n => n !== chosen);
-  if (!pool.length) pool = present;
+
+  // Cross out previously chosen student
+  if (chosen) {
+    called.add(chosen);
+  }
+
+  // Find remaining uncalled students
+  let pool = present.filter(n => !called.has(n));
+
+  // If everyone has been called, reset the cycle
+  if (pool.length === 0) {
+    called.clear();
+    pool = present;
+  }
+
+  // Pick random from remaining
   chosen = pool[Math.floor(Math.random() * pool.length)];
-  if (groups.length) pairs(); else roster();
-  status.textContent = `Random student: ${chosen}`;
+
+  if (room.style.display === 'block') {
+    classroom();
+  } else if (groups.length) {
+    pairs();
+  } else {
+    roster();
+  }
+
+  status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
 }
 
-const DISCUSSION_QUESTIONS = [
-  "What was the hardest topic you studied in maths last year, and why did you find it difficult?",
-  "What maths topic have you improved at the most over the last year? What helped?",
-  "Which maths topic do you currently feel most confident with, and why?",
-  "What is one mathematical mistake that taught you something useful?",
-  "Which topic in maths do you think requires the most practice rather than understanding? Why?",
-  "Which topic in maths do you think requires the most understanding rather than practice? Why?",
-  "What makes a maths explanation genuinely helpful?",
-  "When you get stuck on a maths problem, what is the first thing you usually try?",
-  "Is it better to struggle with a difficult problem for a while or ask for help quickly? Why?",
-  "What makes a maths question feel difficult even when you know the required mathematics?",
-  "Which is more important in maths: accuracy or speed? Explain your view?",
-  "How do you know when you genuinely understand a maths topic rather than just know the method?",
-  "What is the best way to revise mathematics? What works particularly well for you?",
-  "Do you learn more from getting a question right or getting one wrong? Why?",
-  "What is one maths skill you would most like to improve this year?",
-  "Which area of mathematics do you find most interesting, even if you do not find it easy?",
-  "What piece of mathematics have you learned that surprised you?",
-  "Where have you noticed mathematics being used outside the classroom recently?",
-  "Should calculators be used more or less often in maths lessons? Why?",
-  "Is memorising formulae useful, or is understanding where they come from more important?",
-  "What makes a good mathematical diagram?",
-  "When is it useful to solve a problem in more than one way?",
-  "What qualities make someone good at mathematics?",
-  "Do you think confidence affects mathematical performance? How?",
-  "What is more satisfying: solving a long difficult problem or spotting a short clever solution? Why?",
-  "If you could remove one topic from the maths curriculum, what would you choose and why?",
-  "If you could add one topic to the maths curriculum, what would you add and why?",
-  "Which GCSE maths topic do you think is most important for A-level Maths?",
-  "What advice about studying maths would you give your Year 11 self?",
-  "Describe a maths lesson or activity that you remember particularly well. Why has it stuck with you?",
-  "What challenge have you faced in college that you have had to overcome? How did you overcome it?",
-  "What advice would you give someone who is about to start college?",
-  "What has been the biggest difference between school and college for you?",
-  "What is one thing you have become better at since starting college?",
-  "What study habit would you most like to improve?",
-  "What does a productive independent study session look like for you?",
-  "What usually causes you to procrastinate, and what helps you get started?",
-  "Is it better to revise little and often or in longer sessions? Why?",
-  "What is one academic goal you would like to achieve this term, and what would help you achieve it?",
-  "What do you do when you receive a mark or grade that is lower than you hoped?",
-  "What makes feedback useful to you?",
-  "What is a skill you have learned outside lessons that has helped you academically?",
-  "What makes someone a good person to work with in a pair or group?",
-  "How can you disagree with someone's idea constructively?",
-  "What is the best question a student can ask a teacher when they are stuck?",
-  "Would you rather give a presentation, sit an exam, or write an essay to demonstrate what you know? Why?",
-  "What is something you used to find difficult academically that now feels much easier?",
-  "How do you balance doing work well with getting it finished on time?",
-  "What motivates you to keep working when a task is difficult?",
-  "If you could give one piece of advice to yourself at the start of Year 12, what would it be?",
-  "What were the most important ideas from your last maths lesson?",
-  "What is one thing from the last lesson that you could explain confidently to someone else?",
-  "What part of the last lesson did you find most challenging, and why?",
-  "What question from the last lesson would you most like to see worked through again?",
-  "What mistake would someone be most likely to make with the topic you are studying at the moment?",
-  "What are the common mistakes that could be made with the current topic? How could you avoid them?",
-  "What prior knowledge do you think helps most with your current topic, and why?",
-  "Which GCSE skill is most useful for the topic you are currently studying?",
-  "How does the current topic connect to something you have studied previously?",
-  "What is the key idea someone needs to understand before they can be successful with the current topic?",
-  "If you had to teach the current topic to someone who missed the lesson, where would you start?",
-  "What vocabulary or notation is particularly important in the current topic? Why?",
-  "What is one step in the current method that students might forget or misunderstand?",
-  "How could you check whether an answer in the current topic is reasonable?",
-  "What clues in a question tell you which method to use in the current topic?",
-  "How would you explain the purpose of the method you are currently learning, rather than just the steps?",
-  "What is the difference between understanding the current topic and simply memorising a procedure?",
-  "Can you think of two different types of question that could be asked about the current topic?",
-  "What would make a question on the current topic significantly harder?",
-  "What is one question you could ask your partner to test whether they understand the current topic?",
-  "What advice would you give someone who is struggling with the topic you are currently studying?",
-  "What is one thing about the current topic that now seems easier than it did at the start?",
-  "Which part of the current topic do you think is most likely to appear within a larger exam question?",
-  "How might the current topic be combined with another area of mathematics in an exam question?",
-  "What would a really good written solution to a question on the current topic need to include?"
-];
+/* --- 90 Categorized Discussion Questions --- */
+const QUESTION_CATEGORIES = {
+  maths: {
+    label: "Maths Related",
+    icon: "📐",
+    questions: [
+      "What was the hardest topic you studied in maths last year, and why was it difficult?",
+      "What maths topic have you improved at the most over the last year? What helped?",
+      "Which maths topic do you currently feel most confident with, and why?",
+      "What is one mathematical mistake that taught you something useful?",
+      "Which topic in maths requires the most practice rather than conceptual understanding? Why?",
+      "Which topic in maths requires the most conceptual understanding rather than practice? Why?",
+      "What makes a maths explanation genuinely helpful versus confusing?",
+      "When you get stuck on a maths problem, what is the first thing you usually try?",
+      "Is it better to struggle with a difficult problem for a while or ask for help quickly? Why?",
+      "What makes a maths question feel difficult even when you know the required formulae?",
+      "Which is more important in maths: accuracy or speed? Explain your view.",
+      "How do you know when you genuinely understand a topic rather than just knowing the procedure?",
+      "What is the best way to revise mathematics for an upcoming test or assessment?",
+      "Do you learn more from getting a question right or getting one wrong? Why?",
+      "What is one maths skill or method you would most like to master this term?",
+      "Which area of mathematics do you find most interesting, even if you do not find it easy?",
+      "What piece of mathematics have you learned that genuinely surprised you?",
+      "Where have you noticed mathematics being used outside of education recently?",
+      "Should calculators be used more or less often in maths lessons? Why?",
+      "Is memorising formulae useful, or is understanding where they come from more important?",
+      "What makes a good mathematical diagram, graph, or sketch?",
+      "When is it useful to solve a maths problem in more than one way?",
+      "What qualities make someone genuinely good at mathematics?",
+      "What is more satisfying: solving a long difficult problem or finding a short clever shortcut? Why?",
+      "If you could remove one topic from the maths curriculum, what would it be and why?",
+      "If you could add one topic or real-world application to the curriculum, what would it be?",
+      "Which GCSE maths topic do you think is most foundational for advanced maths?",
+      "What advice about learning maths would you give your Year 11 self?",
+      "Describe a maths lesson, puzzle, or activity that you remember particularly well. Why did it stick?",
+      "What would a perfect, fully-explained written solution to an exam problem look like?"
+    ]
+  },
+  general: {
+    label: "Study & College Life",
+    icon: "📚",
+    questions: [
+      "What does an effective, productive independent study session look like for you?",
+      "What usually causes you to procrastinate, and what practical step helps you get started?",
+      "Is it better to revise little and often or in longer, focused study blocks? Why?",
+      "What study habit or routine would you most like to improve this term?",
+      "How do you decide what task to prioritise when you have multiple deadlines?",
+      "What has been the biggest difference between GCSE and sixth form or college work?",
+      "How do you manage your time during free periods or independent study time?",
+      "Where is your favorite place to study, and what makes that environment productive?",
+      "What role should flashcards or retrieval practice play compared to doing past paper questions?",
+      "How do you test yourself to know whether your revision has actually been effective?",
+      "What is the most common reason students fall behind on work, and how can it be avoided?",
+      "How do you balance doing high-quality work with completing assignments on time?",
+      "What practical advice would you give someone who feels overwhelmed by their workload?",
+      "What phone or digital distractions disrupt your focus the most, and how do you manage them?",
+      "Is listening to music while studying helpful, neutral, or harmful to your concentration?",
+      "How do you take notes in lessons so that they are actually useful for revision later?",
+      "What is the best way to review a topic you covered six months ago?",
+      "How do you keep yourself organized with worksheets, folders, and digital files?",
+      "When working through practice questions, when is the best time to check the mark scheme?",
+      "What is one academic habit you started this year that you wish you had started earlier?",
+      "How do you keep yourself motivated during long revision periods before exams?",
+      "Would you rather study alone in complete silence or in a quiet study group? Why?",
+      "What is the single most valuable study tip anyone has ever given you?",
+      "How do you ensure you get enough sleep and rest without falling behind on schoolwork?",
+      "What makes a teacher's feedback or marking genuinely actionable for you?",
+      "How do you approach revising topics that you dislike or find boring?",
+      "What is one revision technique students often use that is actually a waste of time?",
+      "How do you assess your own understanding before a test without relying on teacher confirmation?",
+      "What advice would you give to a Year 11 student about transitioning to post-16 study?",
+      "What is one realistic academic goal you want to achieve by the end of this month?"
+    ]
+  },
+  individual: {
+    label: "Personal & Mindset",
+    icon: "🌱",
+    questions: [
+      "How do you react internally when you receive a lower grade or mark than you hoped for?",
+      "What motivates you to keep trying when a problem or assignment feels completely impossible?",
+      "Do you think academic confidence comes from natural ability or from accumulated practice?",
+      "What qualities make someone great to work with in a paired discussion or group task?",
+      "How can you respectfully disagree with a partner's reasoning during problem solving?",
+      "What is the most useful question a student can ask a teacher when they are stuck on a task?",
+      "Would you rather give a short presentation, sit an exam, or write an essay to show your understanding?",
+      "What is something you used to find very difficult that now feels natural and easy?",
+      "What is one personal strength you bring to pair work or team discussions?",
+      "What is an area of personal growth you have noticed in yourself over the past year?",
+      "How do you handle pressure or nerves before a test or high-stakes presentation?",
+      "What does resilience look like to you in an everyday classroom setting?",
+      "If you could give your younger self one piece of advice about school life, what would it be?",
+      "Who has been a major positive influence on your attitude towards learning, and why?",
+      "What makes you feel genuinely proud of a piece of academic work?",
+      "How comfortable are you with making mistakes in front of your peers, and what helps?",
+      "What is one non-academic hobby or interest that has taught you useful academic skills?",
+      "When working in a pair, how do you make sure both people contribute equally?",
+      "What is something you are curious about learning that isn't part of any curriculum?",
+      "How do you maintain a healthy balance between your academic goals and personal life?",
+      "What is one thing you do to reset or recharge when you feel mentally exhausted?",
+      "How do you define personal success beyond just exam grades or scores?",
+      "If you could master any skill overnight, academic or non-academic, what would it be?",
+      "What is a piece of constructive criticism you received that actually helped you improve?",
+      "How do you encourage a classmate or friend when they are feeling discouraged?",
+      "What helps you feel focused and ready to learn when you arrive at a lesson?",
+      "When you accomplish a tough goal, how do you celebrate or acknowledge it?",
+      "What is one assumption people often make about you that isn't quite accurate?",
+      "If you had to explain what makes you uniquely you in three words, what would they be?",
+      "What is one legacy or positive impression you want to leave behind in your school or college?"
+    ]
+  }
+};
 
-let lastQuestion = -1;
-function newDiscussionQuestion() {
-  let choices = DISCUSSION_QUESTIONS.map((_, i) => i).filter(i => i !== lastQuestion);
-  lastQuestion = choices[Math.floor(Math.random() * choices.length)];
-  discussionQuestion.textContent = DISCUSSION_QUESTIONS[lastQuestion];
+let currentCategory = 'maths';
+let lastQuestionIdx = -1;
+
+function populateQuestionDropdown(catKey, selectedIdx = 0) {
+  const cat = QUESTION_CATEGORIES[catKey];
+  const sel = qs('#questionSelect');
+  sel.innerHTML = '';
+  cat.questions.forEach((q, idx) => {
+    let opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = `${idx + 1}. ${q.length > 78 ? q.slice(0, 75) + '...' : q}`;
+    sel.appendChild(opt);
+  });
+  if (selectedIdx >= 0 && selectedIdx < cat.questions.length) {
+    sel.value = selectedIdx;
+  }
 }
-qs('#newQuestion').onclick = newDiscussionQuestion;
 
+function setQuestion(catKey, idx) {
+  lastQuestionIdx = idx;
+  const q = QUESTION_CATEGORIES[catKey].questions[idx];
+  qs('#discussionQuestion').textContent = q;
+  qs('#questionSelect').value = idx;
+}
+
+function pickRandomQuestion() {
+  const cat = QUESTION_CATEGORIES[currentCategory];
+  let choices = cat.questions.map((_, i) => i).filter(i => i !== lastQuestionIdx);
+  if (!choices.length) choices = [0];
+  const idx = choices[Math.floor(Math.random() * choices.length)];
+  setQuestion(currentCategory, idx);
+}
+
+// Category tabs click handler
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
+    currentCategory = btn.dataset.cat;
+    populateQuestionDropdown(currentCategory, 0);
+    pickRandomQuestion();
+  };
+});
+
+// Dropdown question selection handler
+qs('#questionSelect').onchange = (e) => {
+  const idx = +e.target.value;
+  setQuestion(currentCategory, idx);
+};
+
+qs('#newQuestion').onclick = pickRandomQuestion;
+
+// Initialize discussion questions
+populateQuestionDropdown('maths', 0);
+setQuestion('maths', 0);
+
+/* --- Timer --- */
 let interval;
 function startTimer(m) {
   clearInterval(interval);
@@ -995,7 +1173,7 @@ function updateRestrictStudentDropdown(preferredStudent = '') {
   if (preferredStudent && students.includes(preferredStudent)) {
     sel.value = preferredStudent;
   } else if (students.length > 0) {
-    sel.value = students[0]; // Auto-select 1st student so options are immediately visible
+    sel.value = students[0];
   } else {
     sel.value = '';
   }
@@ -1108,12 +1286,10 @@ function renderSaved() {
       qs('#classCode').dataset.old = k;
       editingBannedPairs = new Set((v.bannedPairs || []).map(([a, b]) => pairKey(a, b)));
       
-      // Update UI state and auto-select first student
       qs('#classEditorTitle').textContent = `✏️ Editing Class: ${k}`;
       qs('#classEditorSection').classList.add('is-editing');
       updateRestrictStudentDropdown(v.students[0] || '');
 
-      // Smoothly scroll straight up to the editor & omissions box
       const target = qs('#classEditorSection');
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
