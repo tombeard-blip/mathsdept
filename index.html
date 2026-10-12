@@ -24,6 +24,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 main {
   position: relative;
@@ -34,6 +35,7 @@ main {
   border-radius: 20px;
   padding: 22px;
   box-shadow: 0 16px 45px #14203a12;
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
 .sub { color: var(--muted); margin: 4px 0 16px; font-size: 0.95rem; }
@@ -66,7 +68,7 @@ button { padding: 0 16px; background: var(--ink); color: #fff; cursor: pointer; 
 .secondary { background: #fff; color: var(--ink); }
 button:disabled { opacity: .4; cursor: not-allowed; }
 #status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; }
-#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; }
+#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; position: relative; }
 .student {
   min-width: 130px;
   min-height: 76px;
@@ -81,7 +83,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   font-weight: 850;
   box-shadow: 0 5px 14px #14203a18;
   user-select: none;
-  transition: opacity .2s ease, filter .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease, filter .2s ease;
 }
 .student.selectable { cursor: pointer; }
 .student.absent { filter: grayscale(1); opacity: .3; text-decoration: line-through; }
@@ -224,6 +226,194 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .desk .student { min-width: 82px; min-height: 48px; padding: 5px 8px; border-width: 2px; font-size: .86rem; }
 .hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; }
 
+/* Top action bar buttons */
+.top-actions { position: absolute; right: 22px; top: 22px; display: flex; gap: 8px; }
+.disco-toggle-btn {
+  background: linear-gradient(135deg, #f43f5e, #8b5cf6, #3b82f6);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px #8b5cf644;
+  font-weight: 800;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.disco-toggle-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px #8b5cf666; }
+
+/* ========================================================
+   DISCO MODE STYLES & DANCE FLOOR
+======================================================== */
+body.disco-mode {
+  background: #090814;
+  color: #f8fafc;
+}
+body.disco-mode main {
+  background: #110e24cc;
+  backdrop-filter: blur(8px);
+  border: 2px solid #a855f7;
+  box-shadow: 0 0 45px #a855f733, inset 0 0 60px #1e1145;
+  color: #f8fafc;
+}
+body.disco-mode .sub { color: #c084fc; }
+body.disco-mode .paircard {
+  background: #1a1636;
+  border-color: #4c1d95;
+  box-shadow: 0 6px 18px #00000055;
+}
+body.disco-mode .pairlabel,
+body.disco-mode .timer-label,
+body.disco-mode .desk-label,
+body.disco-mode .discussion-title,
+body.disco-mode #status { color: #e9d5ff; }
+body.disco-mode .discussion-question {
+  background: #191438;
+  border-color: #6b21a8;
+  color: #fdf4ff;
+  box-shadow: inset 0 0 25px #3b0764;
+}
+body.disco-mode .cat-btn {
+  background: #1c183d;
+  color: #e9d5ff;
+  border-color: #581c87;
+}
+body.disco-mode .cat-btn.active {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 14px #ec489966;
+}
+body.disco-mode .cat-plus-btn {
+  background: #1c183d;
+  color: #f472b6;
+  border-color: #581c87;
+}
+body.disco-mode button.secondary {
+  background: #1e1b40;
+  color: #f3e8ff;
+  border-color: #6b21a8;
+}
+body.disco-mode button.secondary:hover { background: #2e265c; }
+body.disco-mode select {
+  background: #191438;
+  color: #fdf4ff;
+  border-color: #6b21a8;
+}
+
+/* Disco Floor on Room */
+body.disco-mode #room {
+  border-color: #c084fc;
+  background: 
+    linear-gradient(#2e106544 2px, transparent 2px),
+    linear-gradient(90deg, #2e106544 2px, transparent 2px),
+    radial-gradient(circle at 50% 0%, #3b0764 0%, #0a0618 80%);
+  background-size: 38px 38px, 38px 38px, 100% 100%;
+}
+body.disco-mode .desk {
+  background: #1b1638;
+  border-color: #7c3aed;
+  box-shadow: 0 8px 20px #00000088, 0 0 10px #7c3aed44;
+}
+
+/* Disco Ball & Beams UI */
+#discoRig {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin: 6px auto 14px;
+  position: relative;
+  z-index: 15;
+}
+body.disco-mode #discoRig { display: flex; }
+
+.disco-string {
+  width: 2px;
+  height: 24px;
+  background: linear-gradient(#cbd5e1, #94a3b8);
+}
+.disco-ball {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  position: relative;
+  background: 
+    radial-gradient(circle at 35% 30%, #ffffff 0%, #cbd5e1 35%, #64748b 70%, #1e293b 100%);
+  box-shadow: 0 0 25px #e2e8f0aa, 0 8px 30px #a855f755;
+  animation: spinBall 6s linear infinite;
+  overflow: hidden;
+}
+body.disco-mode.spinning-fast .disco-ball {
+  animation: spinBall 0.4s linear infinite;
+  box-shadow: 0 0 45px #f43f5e, 0 0 70px #38bdf8;
+}
+@keyframes spinBall {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Disco Ball Mirror Texture */
+.disco-ball::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+  background-size: 7px 7px;
+  mix-blend-mode: overlay;
+}
+
+/* Rotating Light Rays */
+.disco-beams {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  width: 380px;
+  height: 220px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: 
+    conic-gradient(from 0deg at 50% 0%, 
+      transparent 0deg, #ec489922 25deg, transparent 50deg,
+      #38bdf822 90deg, transparent 120deg,
+      #fbbf2422 160deg, transparent 190deg,
+      #a855f722 240deg, transparent 270deg,
+      #34d39922 320deg, transparent 360deg);
+  animation: sweepBeams 5s linear infinite;
+}
+body.disco-mode.spinning-fast .disco-beams {
+  animation: sweepBeams 0.6s linear infinite;
+  background: 
+    conic-gradient(from 0deg at 50% 0%, 
+      transparent 0deg, #ec489966 25deg, transparent 50deg,
+      #38bdf866 90deg, transparent 120deg,
+      #fbbf2466 160deg, transparent 190deg,
+      #a855f766 240deg, transparent 270deg,
+      #34d39966 320deg, transparent 360deg);
+}
+@keyframes sweepBeams {
+  0% { transform: translateX(-50%) rotate(0deg); }
+  100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Active Spotlight Roulette Effect on Students */
+.student.disco-lit {
+  transform: scale(1.22);
+  box-shadow: 0 0 30px #f43f5e, 0 0 60px #ec4899aa;
+  outline: 4px solid #fff;
+  z-index: 10;
+  filter: brightness(1.3) saturate(1.4);
+}
+.student.disco-winner {
+  transform: scale(1.38);
+  box-shadow: 0 0 40px #fbbf24, 0 0 80px #f43f5e, 0 0 100px #38bdf8;
+  outline: 5px solid #fff;
+  z-index: 20;
+  animation: winnerGlow 0.5s ease-in-out infinite alternate;
+}
+@keyframes winnerGlow {
+  0% { filter: brightness(1.2) drop-shadow(0 0 15px #f43f5e); }
+  100% { filter: brightness(1.5) drop-shadow(0 0 35px #38bdf8); }
+}
+
 /* Modals */
 .modal-overlay {
   position: fixed;
@@ -241,6 +431,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   max-height: 94vh;
   overflow-y: auto;
   background: #fff;
+  color: var(--ink);
   border-radius: 18px;
   padding: 18px 22px;
   box-shadow: 0 20px 70px #17203355;
@@ -248,14 +439,13 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .field { margin: 10px 0; }
 .field label { display: block; font-weight: 850; margin-bottom: 4px; font-size: 0.85rem; }
-.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 2px solid #dce2ea; border-radius: 8px; font: inherit; }
+.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 2px solid #dce2ea; border-radius: 8px; font: inherit; background:#fff; color:var(--ink); }
 .field textarea { min-height: 110px; resize: vertical; }
 .savedrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; background: #f5f7fa; border-radius: 8px; margin: 6px 0; }
 .small { font-size: .8rem; color: #687386; }
 .modalbuttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
 .backup-bar { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
 .backup-bar button { height: 34px; font-size: .8rem; padding: 0 10px; }
-#staffSetup { position: absolute; right: 22px; top: 22px; }
 
 .editor-card {
   background: #fdfefe;
@@ -333,8 +523,20 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 <body>
 <main>
   <h1 id="mainTitle">Pair Up!</h1>
-  <button id="staffSetup" class="secondary" type="button">⚙️ Staff Setup</button>
+  
+  <div class="top-actions">
+    <button id="discoToggle" class="disco-toggle-btn" type="button" title="Toggle Disco Mode">🪩 Disco Mode</button>
+    <button id="staffSetup" class="secondary" type="button">⚙️ Staff Setup</button>
+  </div>
+
   <p class="sub">Choose a class, mark absences, then randomly pair the students.</p>
+
+  <!-- Hanging Spinning Disco Ball Component -->
+  <div id="discoRig">
+    <div class="disco-string"></div>
+    <div class="disco-ball"></div>
+    <div class="disco-beams"></div>
+  </div>
 
   <div class="class-picker" id="classPicker"></div>
 
@@ -406,7 +608,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
     <div class="setupbox" id="setupScrollBox">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="margin:0;">Staff Setup</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">v2.6</span>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v2.7</span>
       </div>
 
       <div class="field" style="margin-top:12px;">
@@ -595,7 +797,7 @@ const StorageSafe = {
 };
 
 const STORE = 'pairup-staff-v1';
-let STAFF = { teacher: "", classes: {}, customQuestions: [] };
+let STAFF = { teacher: "", classes: {}, customQuestions: [], discoMode: false };
 
 try {
   let loaded = StorageSafe.get(STORE);
@@ -613,6 +815,7 @@ try {
       renderClassButtons();
       blank();
       syncCustomQuestions();
+      applyDiscoMode();
     }
   } catch(e) {}
 })();
@@ -621,11 +824,75 @@ const persist = () => {
   StorageSafe.set(STORE, JSON.stringify(STAFF));
 };
 
+/* --- Synthesizer Sound Engine for Disco Mode (Gentle Web Audio) --- */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playDiscoBlip(freq = 520) {
+  try {
+    let ctx = getAudioCtx();
+    if (!ctx) return;
+    let osc = ctx.createOscillator();
+    let gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.05);
+  } catch(e) {}
+}
+
+function playDiscoWinnerSound() {
+  try {
+    let ctx = getAudioCtx();
+    if (!ctx) return;
+    const chords = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+    chords.forEach((freq, idx) => {
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      let start = ctx.currentTime + (idx * 0.06);
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.05, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.45);
+    });
+  } catch(e) {}
+}
+
+/* --- Disco Mode Toggle Logic --- */
+const discoToggle = qs('#discoToggle');
+function applyDiscoMode() {
+  document.body.classList.toggle('disco-mode', !!STAFF.discoMode);
+  discoToggle.textContent = STAFF.discoMode ? '🪩 Exit Disco' : '🪩 Disco Mode';
+}
+discoToggle.onclick = () => {
+  STAFF.discoMode = !STAFF.discoMode;
+  persist();
+  applyDiscoMode();
+};
+applyDiscoMode();
+
 /* --- Main App Code --- */
 const colours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CDEFE5','#CFE8FF','#D9DCFF','#E8D5FF','#F6D1EA','#FFD9C7','#E2F0CB','#BFE3E0','#C9DAF8','#D9D2E9','#F4CCCC','#FCE5CD','#FFF2CC','#D9EAD3','#D0E0E3','#CFE2F3'];
 const classColours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CFE8FF','#E8D5FF'];
 
-const qs = x => document.querySelector(x);
 const stage = qs('#stage'), room = qs('#room'), status = qs('#status');
 const arrange = qs('#arrange'), back = qs('#back'), reset = qs('#reset');
 const timer = qs('#timer'), clock = qs('#clock');
@@ -639,6 +906,7 @@ let absent = new Set();
 let called = new Set();
 let groups = [];
 let chosen = null;
+let isRouletteSpinning = false;
 
 let editingBannedPairs = new Set();
 
@@ -715,11 +983,13 @@ function chip(n, small = false, click = false) {
     + (isCalled && !isChosen ? ' called' : '')
     + (isChosen ? ' chosen' : '');
 
+  e.dataset.name = n;
   e.textContent = n;
   e.style.setProperty('--c', colours[(i >= 0 ? i : 0) % colours.length]);
   
   if (click) {
     e.onclick = () => {
+      if (isRouletteSpinning) return;
       if (absent.has(n)) {
         absent.delete(n);
       } else {
@@ -944,8 +1214,10 @@ function clearGroups() {
   status.textContent = `${CLASSES[currentClass].length - absent.size} present — groupings cleared.`;
 }
 
-/* --- Random Student Picker with Strikethroughs --- */
+/* --- Random Student Picker with Disco Ball Light-Cycling Roulette --- */
 function randomStudent() {
+  if (isRouletteSpinning) return;
+
   const present = CLASSES[currentClass].filter(n => !absent.has(n));
   if (!present.length) return;
 
@@ -960,17 +1232,74 @@ function randomStudent() {
     pool = present;
   }
 
-  chosen = pool[Math.floor(Math.random() * pool.length)];
+  const targetWinner = pool[Math.floor(Math.random() * pool.length)];
 
-  if (room.style.display === 'block') {
-    classroom();
-  } else if (groups.length) {
-    pairs();
-  } else {
-    roster();
+  // If NOT in Disco Mode, select immediately without delay
+  if (!STAFF.discoMode) {
+    chosen = targetWinner;
+    if (room.style.display === 'block') classroom();
+    else if (groups.length) pairs();
+    else roster();
+    status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
+    return;
   }
 
-  status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
+  // DISCO MODE: Roulette Spotlight Reflection Cycle
+  isRouletteSpinning = true;
+  qs('#dice').disabled = true;
+  document.body.classList.add('spinning-fast');
+
+  // Find all student chip elements currently displayed
+  const visibleChips = [...document.querySelectorAll('.student:not(.absent)')];
+  let availableChips = visibleChips.filter(c => pool.includes(c.dataset.name));
+  if (!availableChips.length) availableChips = visibleChips;
+
+  let currentIdx = 0;
+  let delay = 65;
+  let totalSteps = 28 + Math.floor(Math.random() * 8);
+  let step = 0;
+
+  function runRoulette() {
+    visibleChips.forEach(c => {
+      c.classList.remove('disco-lit', 'disco-winner');
+    });
+
+    const chipElem = availableChips[currentIdx % availableChips.length];
+    if (chipElem) {
+      chipElem.classList.add('disco-lit');
+      playDiscoBlip(480 + (currentIdx % 8) * 45);
+    }
+
+    currentIdx++;
+    step++;
+
+    if (step < totalSteps) {
+      if (step > totalSteps - 10) {
+        delay += 32; // Deceleration
+      }
+      setTimeout(runRoulette, delay);
+    } else {
+      // Land on target winner
+      chosen = targetWinner;
+      document.body.classList.remove('spinning-fast');
+
+      if (room.style.display === 'block') classroom();
+      else if (groups.length) pairs();
+      else roster();
+
+      const finalChip = document.querySelector(`.student[data-name="${CSS.escape(chosen)}"]`);
+      if (finalChip) {
+        finalChip.classList.add('disco-winner');
+      }
+
+      playDiscoWinnerSound();
+      status.textContent = `🪩 Disco Winner: ${chosen} (${called.size + 1}/${present.length} called)`;
+      isRouletteSpinning = false;
+      qs('#dice').disabled = false;
+    }
+  }
+
+  runRoulette();
 }
 
 /* --- Categorized Discussion Questions Pool --- */
@@ -1239,7 +1568,6 @@ qs('#customFileInput').onchange = (e) => {
           imported = parsed.customQuestions.map(x => String(x).trim()).filter(Boolean);
         }
       } else {
-        // Plain text file (one line per question)
         imported = text.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
       }
 
@@ -1555,6 +1883,7 @@ qs('#fileInput').onchange = (e) => {
         renderClassButtons();
         renderSaved();
         syncCustomQuestions();
+        applyDiscoMode();
         blank();
         alert('Classes imported successfully!');
       } else {
@@ -1593,6 +1922,7 @@ qs('#btnPaste').onclick = () => {
       renderClassButtons();
       renderSaved();
       syncCustomQuestions();
+      applyDiscoMode();
       blank();
       alert('Classes restored successfully!');
     } else {
