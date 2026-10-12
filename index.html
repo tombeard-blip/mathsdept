@@ -25,6 +25,7 @@ body {
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
 }
 main {
   position: relative;
@@ -36,10 +37,11 @@ main {
   padding: 22px;
   box-shadow: 0 16px 45px #14203a12;
   transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 2;
 }
 h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
 .sub { color: var(--muted); margin: 4px 0 16px; font-size: 0.95rem; }
-.class-picker { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+.class-picker { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; position: relative; z-index: 5; }
 .class-btn {
   min-width: 140px;
   display: flex;
@@ -59,7 +61,7 @@ h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
 .class-code { font-size: 1.05rem; font-weight: 900; }
 .teacher-names { font-size: .72rem; font-weight: 700; opacity: .72; white-space: nowrap; }
 .class-btn.active { outline: 4px solid var(--ink); outline-offset: 2px; transform: translateY(-1px); }
-.controls { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.controls { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; position: relative; z-index: 5; }
 .empty-state { width: 100%; padding: 50px 20px; text-align: center; color: var(--muted); font-size: 1.15rem; font-weight: 700; }
 label { font-size: .85rem; font-weight: 800; }
 select, button { height: 44px; border-radius: 10px; border: 1px solid var(--line); font: inherit; font-weight: 750; }
@@ -67,8 +69,9 @@ select { display: block; margin-top: 4px; padding: 0 12px; background: #fff; }
 button { padding: 0 16px; background: var(--ink); color: #fff; cursor: pointer; }
 .secondary { background: #fff; color: var(--ink); }
 button:disabled { opacity: .4; cursor: not-allowed; }
-#status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; }
-#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; position: relative; }
+#status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; position: relative; z-index: 5; }
+#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; position: relative; z-index: 5; }
+
 .student {
   min-width: 130px;
   min-height: 76px;
@@ -80,7 +83,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   background: var(--c);
   border: 3px solid var(--ink);
   font-size: 1.25rem;
-  font-weight: 850;
+  font-weight: 900;
+  color: #111827 !important;
   box-shadow: 0 5px 14px #14203a18;
   user-select: none;
   transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease, filter .2s ease;
@@ -105,11 +109,11 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   filter: none !important;
 }
 .dice { font-size: 1.3rem; min-width: 50px; padding: 0 10px; }
-.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; }
+.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; position: relative; z-index: 5; }
 .pairlabel, .timer-label, .desk-label { font-size: .72rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
 .people, .desk-people { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .pairlabel { margin-bottom: 8px; }
-.timer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line); }
+.timer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line); position: relative; z-index: 5; }
 .room-timer {
   position: absolute;
   right: 20px;
@@ -132,7 +136,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .room-timer-buttons button { width: 100%; padding: 4px; height: 30px; background: #fff; color: var(--ink); font-size: .78rem; }
 
 /* Discussion Questions Section */
-.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); }
+.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); position: relative; z-index: 5; }
 .discussion-title { font-size: .78rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
 .discussion-controls { width: min(920px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
 .category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center; }
@@ -188,6 +192,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   background-size: 32px 32px;
   overflow: hidden;
   touch-action: none;
+  z-index: 5;
 }
 #board {
   position: absolute;
@@ -224,10 +229,10 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .desk:active { cursor: grabbing; }
 .desk .student { min-width: 82px; min-height: 48px; padding: 5px 8px; border-width: 2px; font-size: .86rem; }
-.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; }
+.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; position: relative; z-index: 5; }
 
 /* Top action bar buttons */
-.top-actions { position: absolute; right: 22px; top: 22px; display: flex; gap: 8px; }
+.top-actions { position: absolute; right: 22px; top: 22px; display: flex; gap: 8px; align-items: center; z-index: 30; }
 .disco-toggle-btn {
   background: linear-gradient(135deg, #f43f5e, #8b5cf6, #3b82f6);
   color: #fff;
@@ -237,34 +242,122 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .disco-toggle-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px #8b5cf666; }
+.music-btn {
+  background: #2e1065;
+  color: #f3e8ff;
+  border: 2px solid #a855f7;
+  font-weight: 750;
+}
 
 /* ========================================================
-   DISCO MODE STYLES & DANCE FLOOR
+   DISCO MODE STYLES & CONTAINED DANCE FLOOR
 ======================================================== */
 body.disco-mode {
-  background: #090814;
+  background: #06040e;
   color: #f8fafc;
 }
+
 body.disco-mode main {
-  background: #110e24cc;
-  backdrop-filter: blur(8px);
+  background: #0d0822;
   border: 2px solid #a855f7;
-  box-shadow: 0 0 45px #a855f733, inset 0 0 60px #1e1145;
+  box-shadow: 0 0 50px rgba(168, 85, 247, 0.4), inset 0 0 80px rgba(88, 28, 135, 0.4);
   color: #f8fafc;
 }
-body.disco-mode .sub { color: #c084fc; }
+
+/* DANCE FLOOR CONTAINER: Fills the main box 100% and clips cleanly */
+#discoDanceFloor {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+body.disco-mode #discoDanceFloor {
+  display: block;
+}
+
+/* Dance floor tiles filling the entire main card */
+.disco-floor-grid {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(192, 132, 252, 0.16) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(192, 132, 252, 0.16) 1.5px, transparent 1.5px),
+    radial-gradient(ellipse at 50% 25%, #221247 0%, #0d0722 65%, #060312 100%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+}
+
+/* Expansive Ambient Beams contained inside the box */
+.disco-ambient-beams {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 1600px;
+  height: 1600px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: 
+    conic-gradient(from 0deg at 50% 50%, 
+      transparent 0deg, rgba(236, 72, 153, 0.14) 20deg, transparent 40deg,
+      rgba(56, 189, 248, 0.14) 80deg, transparent 100deg,
+      rgba(251, 191, 36, 0.14) 150deg, transparent 170deg,
+      rgba(168, 85, 247, 0.14) 230deg, transparent 250deg,
+      rgba(52, 211, 153, 0.14) 310deg, transparent 330deg);
+  animation: sweepBeams 10s linear infinite;
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(circle, black 20%, transparent 65%);
+  -webkit-mask-image: radial-gradient(circle, black 20%, transparent 65%);
+}
+
+body.disco-mode.spinning-fast .disco-ambient-beams {
+  animation: sweepBeams 0.7s linear infinite;
+  background: 
+    conic-gradient(from 0deg at 50% 50%, 
+      transparent 0deg, rgba(236, 72, 153, 0.35) 20deg, transparent 40deg,
+      rgba(56, 189, 248, 0.35) 80deg, transparent 100deg,
+      rgba(251, 191, 36, 0.35) 150deg, transparent 170deg,
+      rgba(168, 85, 247, 0.35) 230deg, transparent 250deg,
+      rgba(52, 211, 153, 0.35) 310deg, transparent 330deg);
+}
+
+@keyframes sweepBeams {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+body.disco-mode .sub { color: #d8b4fe; }
+
+/* SHARP, READABLE BLACK NAMES ON ALL CHIPS IN DISCO MODE */
+body.disco-mode .student {
+  color: #111827 !important;
+  font-weight: 900 !important;
+  border-color: #111827;
+  text-shadow: none !important;
+}
+body.disco-mode .class-btn {
+  color: #111827 !important;
+  border-color: #111827;
+}
+body.disco-mode .class-btn .teacher-names {
+  color: #374151 !important;
+}
+
 body.disco-mode .paircard {
-  background: #1a1636;
-  border-color: #4c1d95;
-  box-shadow: 0 6px 18px #00000055;
+  background: rgba(23, 19, 51, 0.92);
+  border-color: #6b21a8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 body.disco-mode .pairlabel,
 body.disco-mode .timer-label,
 body.disco-mode .desk-label,
 body.disco-mode .discussion-title,
 body.disco-mode #status { color: #e9d5ff; }
+
 body.disco-mode .discussion-question {
-  background: #191438;
+  background: rgba(25, 20, 56, 0.95);
   border-color: #6b21a8;
   color: #fdf4ff;
   box-shadow: inset 0 0 25px #3b0764;
@@ -297,121 +390,85 @@ body.disco-mode select {
   border-color: #6b21a8;
 }
 
-/* Disco Floor on Room */
 body.disco-mode #room {
   border-color: #c084fc;
   background: 
-    linear-gradient(#2e106544 2px, transparent 2px),
-    linear-gradient(90deg, #2e106544 2px, transparent 2px),
+    linear-gradient(rgba(147, 51, 234, 0.2) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(147, 51, 234, 0.2) 2px, transparent 2px),
     radial-gradient(circle at 50% 0%, #3b0764 0%, #0a0618 80%);
-  background-size: 38px 38px, 38px 38px, 100% 100%;
+  background-size: 40px 40px, 40px 40px, 100% 100%;
 }
 body.disco-mode .desk {
   background: #1b1638;
   border-color: #7c3aed;
-  box-shadow: 0 8px 20px #00000088, 0 0 10px #7c3aed44;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 10px rgba(124, 58, 237, 0.4);
 }
 
-/* Disco Ball & Beams UI */
+/* Disco Ball Rig */
 #discoRig {
   display: none;
   flex-direction: column;
   align-items: center;
-  margin: 6px auto 14px;
+  margin: 4px auto 10px;
   position: relative;
-  z-index: 15;
+  z-index: 10;
 }
 body.disco-mode #discoRig { display: flex; }
 
 .disco-string {
   width: 2px;
-  height: 24px;
+  height: 22px;
   background: linear-gradient(#cbd5e1, #94a3b8);
 }
 .disco-ball {
-  width: 72px;
-  height: 72px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   position: relative;
-  background: 
-    radial-gradient(circle at 35% 30%, #ffffff 0%, #cbd5e1 35%, #64748b 70%, #1e293b 100%);
-  box-shadow: 0 0 25px #e2e8f0aa, 0 8px 30px #a855f755;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #cbd5e1 35%, #64748b 70%, #1e293b 100%);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.9), 0 10px 40px rgba(168, 85, 247, 0.6);
   animation: spinBall 6s linear infinite;
   overflow: hidden;
+  z-index: 12;
 }
 body.disco-mode.spinning-fast .disco-ball {
   animation: spinBall 0.4s linear infinite;
-  box-shadow: 0 0 45px #f43f5e, 0 0 70px #38bdf8;
+  box-shadow: 0 0 50px #f43f5e, 0 0 80px #38bdf8;
 }
 @keyframes spinBall {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Disco Ball Mirror Texture */
 .disco-ball::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background-image: 
-    linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
-  background-size: 7px 7px;
+    linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
+  background-size: 8px 8px;
   mix-blend-mode: overlay;
 }
 
-/* Rotating Light Rays */
-.disco-beams {
-  position: absolute;
-  top: 36px;
-  left: 50%;
-  width: 380px;
-  height: 220px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  background: 
-    conic-gradient(from 0deg at 50% 0%, 
-      transparent 0deg, #ec489922 25deg, transparent 50deg,
-      #38bdf822 90deg, transparent 120deg,
-      #fbbf2422 160deg, transparent 190deg,
-      #a855f722 240deg, transparent 270deg,
-      #34d39922 320deg, transparent 360deg);
-  animation: sweepBeams 5s linear infinite;
-}
-body.disco-mode.spinning-fast .disco-beams {
-  animation: sweepBeams 0.6s linear infinite;
-  background: 
-    conic-gradient(from 0deg at 50% 0%, 
-      transparent 0deg, #ec489966 25deg, transparent 50deg,
-      #38bdf866 90deg, transparent 120deg,
-      #fbbf2466 160deg, transparent 190deg,
-      #a855f766 240deg, transparent 270deg,
-      #34d39966 320deg, transparent 360deg);
-}
-@keyframes sweepBeams {
-  0% { transform: translateX(-50%) rotate(0deg); }
-  100% { transform: translateX(-50%) rotate(360deg); }
-}
-
-/* Active Spotlight Roulette Effect on Students */
 .student.disco-lit {
   transform: scale(1.22);
-  box-shadow: 0 0 30px #f43f5e, 0 0 60px #ec4899aa;
+  box-shadow: 0 0 35px #f43f5e, 0 0 70px rgba(236, 72, 153, 0.9);
   outline: 4px solid #fff;
   z-index: 10;
-  filter: brightness(1.3) saturate(1.4);
+  filter: brightness(1.2) saturate(1.3);
 }
 .student.disco-winner {
   transform: scale(1.38);
-  box-shadow: 0 0 40px #fbbf24, 0 0 80px #f43f5e, 0 0 100px #38bdf8;
+  box-shadow: 0 0 45px #fbbf24, 0 0 85px #f43f5e, 0 0 110px #38bdf8;
   outline: 5px solid #fff;
   z-index: 20;
   animation: winnerGlow 0.5s ease-in-out infinite alternate;
 }
 @keyframes winnerGlow {
   0% { filter: brightness(1.2) drop-shadow(0 0 15px #f43f5e); }
-  100% { filter: brightness(1.5) drop-shadow(0 0 35px #38bdf8); }
+  100% { filter: brightness(1.4) drop-shadow(0 0 35px #38bdf8); }
 }
 
 /* Modals */
@@ -522,20 +579,26 @@ body.disco-mode.spinning-fast .disco-beams {
 </head>
 <body>
 <main>
+  <!-- DANCE FLOOR LAYER: Contained inside the main box with clean edge clipping -->
+  <div id="discoDanceFloor">
+    <div class="disco-floor-grid"></div>
+    <div class="disco-ambient-beams"></div>
+  </div>
+
   <h1 id="mainTitle">Pair Up!</h1>
   
   <div class="top-actions">
+    <button id="discoMusicToggle" class="music-btn" type="button" style="display:none;" title="Mute/Unmute Disco Music">🎵 Music: ON</button>
     <button id="discoToggle" class="disco-toggle-btn" type="button" title="Toggle Disco Mode">🪩 Disco Mode</button>
     <button id="staffSetup" class="secondary" type="button">⚙️ Staff Setup</button>
   </div>
 
   <p class="sub">Choose a class, mark absences, then randomly pair the students.</p>
 
-  <!-- Hanging Spinning Disco Ball Component -->
+  <!-- Hanging Spinning Disco Ball -->
   <div id="discoRig">
     <div class="disco-string"></div>
     <div class="disco-ball"></div>
-    <div class="disco-beams"></div>
   </div>
 
   <div class="class-picker" id="classPicker"></div>
@@ -608,7 +671,7 @@ body.disco-mode.spinning-fast .disco-beams {
     <div class="setupbox" id="setupScrollBox">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="margin:0;">Staff Setup</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">v2.7</span>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v3.0</span>
       </div>
 
       <div class="field" style="margin-top:12px;">
@@ -715,7 +778,11 @@ body.disco-mode.spinning-fast .disco-beams {
 </main>
 
 <script>
-/* --- Multi-Engine Persistence for Google Sites & iframes --- */
+/* ========================================================
+   GLOBAL HELPERS & MULTI-ENGINE STORAGE
+======================================================== */
+const qs = x => document.querySelector(x);
+
 const DB_NAME = 'PairUpDB';
 const STORE_NAME = 'PairUpStore';
 
@@ -797,34 +864,22 @@ const StorageSafe = {
 };
 
 const STORE = 'pairup-staff-v1';
-let STAFF = { teacher: "", classes: {}, customQuestions: [], discoMode: false };
+let STAFF = { teacher: "", classes: {}, customQuestions: [], discoMode: false, discoMusic: true };
 
 try {
   let loaded = StorageSafe.get(STORE);
   if (loaded) STAFF = JSON.parse(loaded);
   if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
+  if (typeof STAFF.discoMusic === 'undefined') STAFF.discoMusic = true;
 } catch(e) {}
-
-(async () => {
-  try {
-    let idbData = await idbGet(STORE);
-    if (idbData && (!STAFF.classes || Object.keys(STAFF.classes).length === 0)) {
-      STAFF = JSON.parse(idbData);
-      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
-      refreshTitle();
-      renderClassButtons();
-      blank();
-      syncCustomQuestions();
-      applyDiscoMode();
-    }
-  } catch(e) {}
-})();
 
 const persist = () => {
   StorageSafe.set(STORE, JSON.stringify(STAFF));
 };
 
-/* --- Synthesizer Sound Engine for Disco Mode (Gentle Web Audio) --- */
+/* ========================================================
+   DISCO MODE SOUND & BACKGROUND MUSIC ENGINE
+======================================================== */
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) {
@@ -858,7 +913,7 @@ function playDiscoWinnerSound() {
   try {
     let ctx = getAudioCtx();
     if (!ctx) return;
-    const chords = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+    const chords = [523.25, 659.25, 783.99, 1046.50];
     chords.forEach((freq, idx) => {
       let osc = ctx.createOscillator();
       let gain = ctx.createGain();
@@ -866,7 +921,7 @@ function playDiscoWinnerSound() {
       osc.frequency.value = freq;
       let start = ctx.currentTime + (idx * 0.06);
       gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(0.05, start + 0.02);
+      gain.gain.linearRampToValueAtTime(0.06, start + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -876,20 +931,115 @@ function playDiscoWinnerSound() {
   } catch(e) {}
 }
 
-/* --- Disco Mode Toggle Logic --- */
-const discoToggle = qs('#discoToggle');
-function applyDiscoMode() {
-  document.body.classList.toggle('disco-mode', !!STAFF.discoMode);
-  discoToggle.textContent = STAFF.discoMode ? '🪩 Exit Disco' : '🪩 Disco Mode';
+/* Synthesizer Disco Music Loop (120 BPM) */
+let musicTimer = null;
+let musicStep = 0;
+const bassNotes = [
+  73.42, 146.83, 73.42, 146.83,
+  87.31, 174.61, 87.31, 174.61,
+  98.00, 196.00, 98.00, 196.00,
+  110.00, 220.00, 110.00, 220.00
+];
+
+function triggerDiscoMusicBeat() {
+  if (!STAFF.discoMode || !STAFF.discoMusic) return;
+  try {
+    let ctx = getAudioCtx();
+    if (!ctx) return;
+    let t = ctx.currentTime;
+
+    // Kick Drum
+    if (musicStep % 4 === 0) {
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.frequency.setValueAtTime(140, t);
+      osc.frequency.exponentialRampToValueAtTime(40, t + 0.08);
+      gain.gain.setValueAtTime(0.045, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.09);
+    }
+
+    // Hi-Hat
+    if (musicStep % 4 === 2) {
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(12000, t);
+      gain.gain.setValueAtTime(0.015, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.04);
+    }
+
+    // Bassline
+    let bassFreq = bassNotes[musicStep % bassNotes.length];
+    let bassOsc = ctx.createOscillator();
+    let bassGain = ctx.createGain();
+    bassOsc.type = 'sawtooth';
+    bassOsc.frequency.setValueAtTime(bassFreq, t);
+    bassGain.gain.setValueAtTime(0.02, t);
+    bassGain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+    bassOsc.connect(bassGain);
+    bassGain.connect(ctx.destination);
+    bassOsc.start(t);
+    bassOsc.stop(t + 0.11);
+
+    musicStep = (musicStep + 1) % 16;
+  } catch(e) {}
 }
+
+function startDiscoMusic() {
+  stopDiscoMusic();
+  if (STAFF.discoMode && STAFF.discoMusic) {
+    musicStep = 0;
+    musicTimer = setInterval(triggerDiscoMusicBeat, 125);
+  }
+}
+
+function stopDiscoMusic() {
+  if (musicTimer) {
+    clearInterval(musicTimer);
+    musicTimer = null;
+  }
+}
+
+const discoToggle = qs('#discoToggle');
+const discoMusicToggle = qs('#discoMusicToggle');
+
+function applyDiscoMode() {
+  const isDisco = !!STAFF.discoMode;
+  document.body.classList.toggle('disco-mode', isDisco);
+  discoToggle.textContent = isDisco ? '🪩 Exit Disco' : '🪩 Disco Mode';
+  discoMusicToggle.style.display = isDisco ? 'inline-block' : 'none';
+  discoMusicToggle.textContent = STAFF.discoMusic ? '🎵 Music: ON' : '🔇 Music: OFF';
+
+  if (isDisco) {
+    startDiscoMusic();
+  } else {
+    stopDiscoMusic();
+  }
+}
+
 discoToggle.onclick = () => {
   STAFF.discoMode = !STAFF.discoMode;
   persist();
   applyDiscoMode();
 };
-applyDiscoMode();
 
-/* --- Main App Code --- */
+discoMusicToggle.onclick = () => {
+  STAFF.discoMusic = !STAFF.discoMusic;
+  persist();
+  applyDiscoMode();
+};
+
+/* ========================================================
+   MAIN APPLICATION STATE & SELECTION
+======================================================== */
 const colours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CDEFE5','#CFE8FF','#D9DCFF','#E8D5FF','#F6D1EA','#FFD9C7','#E2F0CB','#BFE3E0','#C9DAF8','#D9D2E9','#F4CCCC','#FCE5CD','#FFF2CC','#D9EAD3','#D0E0E3','#CFE2F3'];
 const classColours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CFE8FF','#E8D5FF'];
 
@@ -1234,7 +1384,6 @@ function randomStudent() {
 
   const targetWinner = pool[Math.floor(Math.random() * pool.length)];
 
-  // If NOT in Disco Mode, select immediately without delay
   if (!STAFF.discoMode) {
     chosen = targetWinner;
     if (room.style.display === 'block') classroom();
@@ -1244,19 +1393,17 @@ function randomStudent() {
     return;
   }
 
-  // DISCO MODE: Roulette Spotlight Reflection Cycle
   isRouletteSpinning = true;
   qs('#dice').disabled = true;
   document.body.classList.add('spinning-fast');
 
-  // Find all student chip elements currently displayed
   const visibleChips = [...document.querySelectorAll('.student:not(.absent)')];
   let availableChips = visibleChips.filter(c => pool.includes(c.dataset.name));
   if (!availableChips.length) availableChips = visibleChips;
 
   let currentIdx = 0;
   let delay = 65;
-  let totalSteps = 28 + Math.floor(Math.random() * 8);
+  let totalSteps = 26 + Math.floor(Math.random() * 8);
   let step = 0;
 
   function runRoulette() {
@@ -1275,11 +1422,10 @@ function randomStudent() {
 
     if (step < totalSteps) {
       if (step > totalSteps - 10) {
-        delay += 32; // Deceleration
+        delay += 32;
       }
       setTimeout(runRoulette, delay);
     } else {
-      // Land on target winner
       chosen = targetWinner;
       document.body.classList.remove('spinning-fast');
 
@@ -1287,7 +1433,7 @@ function randomStudent() {
       else if (groups.length) pairs();
       else roster();
 
-      const finalChip = document.querySelector(`.student[data-name="${CSS.escape(chosen)}"]`);
+      const finalChip = [...document.querySelectorAll('.student')].find(c => c.dataset.name === chosen);
       if (finalChip) {
         finalChip.classList.add('disco-winner');
       }
@@ -1302,7 +1448,9 @@ function randomStudent() {
   runRoulette();
 }
 
-/* --- Categorized Discussion Questions Pool --- */
+/* ========================================================
+   DISCUSSION QUESTIONS POOL (90 + Custom)
+======================================================== */
 const QUESTION_CATEGORIES = {
   maths: {
     label: "Maths Related",
@@ -1483,7 +1631,6 @@ function pickRandomQuestion() {
   setQuestion(currentCategory, idx);
 }
 
-// Category tabs click handler
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
@@ -1493,7 +1640,6 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   };
 });
 
-// Dropdown question selection handler
 qs('#questionSelect').onchange = (e) => {
   if (e.target.value === "") return;
   const idx = +e.target.value;
@@ -1501,11 +1647,6 @@ qs('#questionSelect').onchange = (e) => {
 };
 
 qs('#newQuestion').onclick = pickRandomQuestion;
-
-// Initial sync
-syncCustomQuestions();
-populateQuestionDropdown('maths', 0);
-setQuestion('maths', 0);
 
 /* --- Custom Questions Modal Handlers --- */
 function refreshCustomModalCount() {
@@ -1588,7 +1729,9 @@ qs('#customFileInput').onchange = (e) => {
   reader.readAsText(file);
 };
 
-/* --- Timer --- */
+/* ========================================================
+   TIMER & CONTROLS
+======================================================== */
 let interval;
 function startTimer(m) {
   clearInterval(interval);
@@ -1658,7 +1801,9 @@ function refreshTitle() {
   document.title = qs('#mainTitle').textContent;
 }
 
-/* --- Separation Rules Setup UI --- */
+/* ========================================================
+   SEPARATION RULES & STAFF SETUP
+======================================================== */
 function getFormStudents() {
   return qs('#studentNames').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
 }
@@ -1933,9 +2078,30 @@ qs('#btnPaste').onclick = () => {
   }
 };
 
-// Initial run
+/* ========================================================
+   INITIAL RUN & RESTORE
+======================================================== */
+(async () => {
+  try {
+    let idbData = await idbGet(STORE);
+    if (idbData && (!STAFF.classes || Object.keys(STAFF.classes).length === 0)) {
+      STAFF = JSON.parse(idbData);
+      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
+      refreshTitle();
+      renderClassButtons();
+      blank();
+      syncCustomQuestions();
+      applyDiscoMode();
+    }
+  } catch(e) {}
+})();
+
 refreshTitle();
 renderClassButtons();
+applyDiscoMode();
+syncCustomQuestions();
+populateQuestionDropdown('maths', 0);
+setQuestion('maths', 0);
 blank();
 </script>
 </body>
