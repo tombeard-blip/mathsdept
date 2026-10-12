@@ -132,8 +132,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 /* Discussion Questions Section */
 .discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); }
 .discussion-title { font-size: .78rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
-.discussion-controls { width: min(900px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.discussion-controls { width: min(920px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center; }
 .cat-btn {
   height: 38px;
   padding: 0 14px;
@@ -147,6 +147,24 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   transition: all .15s ease;
 }
 .cat-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.custom-cat-group { display: inline-flex; align-items: center; gap: 4px; }
+.cat-plus-btn {
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--brand);
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.cat-plus-btn:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+
 .question-pickers { width: 100%; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .dropdown-wrapper { flex: 1; min-width: 260px; max-width: 650px; }
 .dropdown-wrapper select { width: 100%; height: 42px; font-size: 0.88rem; border-radius: 10px; border: 2px solid var(--line); }
@@ -206,8 +224,8 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .desk .student { min-width: 82px; min-height: 48px; padding: 5px 8px; border-width: 2px; font-size: .86rem; }
 .hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; }
 
-/* Modal Setup */
-#setupDialog.modal-overlay {
+/* Modals */
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: #17203377;
@@ -218,7 +236,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   padding: 10px;
   overflow: auto;
 }
-#setupDialog .setupbox {
+.setupbox {
   width: min(740px, 96vw);
   max-height: 94vh;
   overflow-y: auto;
@@ -239,7 +257,6 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .backup-bar button { height: 34px; font-size: .8rem; padding: 0 10px; }
 #staffSetup { position: absolute; right: 22px; top: 22px; }
 
-/* Separation rules block */
 .editor-card {
   background: #fdfefe;
   border: 2px solid #dce2ea;
@@ -352,6 +369,10 @@ button:disabled { opacity: .4; cursor: not-allowed; }
         <button class="cat-btn active" data-cat="maths" type="button">📐 Maths Related</button>
         <button class="cat-btn" data-cat="general" type="button">📚 Study &amp; College Life</button>
         <button class="cat-btn" data-cat="individual" type="button">🌱 Personal &amp; Mindset</button>
+        <div class="custom-cat-group">
+          <button class="cat-btn" data-cat="custom" type="button">⭐ My Questions</button>
+          <button id="openCustomQuestionsModal" class="cat-plus-btn" type="button" title="Add or edit your own questions">➕</button>
+        </div>
       </div>
 
       <div class="question-pickers">
@@ -380,11 +401,12 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 
   <div id="hint" class="hint"></div>
 
+  <!-- STAFF SETUP MODAL -->
   <div id="setupDialog" class="modal-overlay" style="display:none">
     <div class="setupbox" id="setupScrollBox">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="margin:0;">Staff Setup</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">v2.5</span>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v2.6</span>
       </div>
 
       <div class="field" style="margin-top:12px;">
@@ -437,7 +459,7 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 
       <hr style="margin:16px 0; border:none; border-top:1px solid var(--line);">
 
-      <h4 style="margin:0 0 6px 0;">Backup &amp; Restore</h4>
+      <h4 style="margin:0 0 6px 0;">Backup &amp; Restore Classes</h4>
       <div class="small" style="margin-bottom:8px">Google Sites can reset embedded data on refresh. Save a backup to guarantee you never lose your classes:</div>
       <div class="backup-bar">
         <button id="btnExport" class="secondary" type="button">📥 Download File</button>
@@ -449,6 +471,42 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 
       <div class="modalbuttons">
         <button id="closeSetup" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM QUESTIONS MODAL -->
+  <div id="customQuestionsDialog" class="modal-overlay" style="display:none">
+    <div class="setupbox">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="margin:0;">⭐ My Custom Questions</h2>
+        <span class="small" style="font-weight:bold; color:var(--brand);">Custom Question Pool</span>
+      </div>
+      <p class="small" style="margin:6px 0 14px 0;">Add your own custom discussion questions to use during lessons.</p>
+
+      <div class="field">
+        <label for="customQuestionsInput">Questions — one per line</label>
+        <textarea id="customQuestionsInput" style="min-height:170px;" placeholder="What was the key insight from yesterday's problem?&#10;How would you explain today's method to a friend?&#10;What is one common pitfall to avoid with this technique?"></textarea>
+        <div class="small" id="customQuestionsCount">0 questions listed</div>
+      </div>
+
+      <div class="modalbuttons" style="justify-content: flex-start; margin-top:8px;">
+        <button id="btnSaveCustomQuestions" type="button">Save Questions</button>
+        <button id="btnClearCustomQuestions" class="secondary" type="button">Clear</button>
+      </div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid var(--line);">
+
+      <h4 style="margin:0 0 6px 0;">Backup &amp; Transfer Questions</h4>
+      <div class="small" style="margin-bottom:8px">Download your custom questions to transfer between devices or save a backup:</div>
+      <div class="backup-bar">
+        <button id="btnExportCustom" class="secondary" type="button">📥 Download Questions</button>
+        <button id="btnImportCustom" class="secondary" type="button">📤 Upload Questions</button>
+        <input type="file" id="customFileInput" accept=".json,.txt" style="display:none">
+      </div>
+
+      <div class="modalbuttons">
+        <button id="btnCloseCustomDialog" type="button">Done</button>
       </div>
     </div>
   </div>
@@ -537,11 +595,12 @@ const StorageSafe = {
 };
 
 const STORE = 'pairup-staff-v1';
-let STAFF = { teacher: "", classes: {} };
+let STAFF = { teacher: "", classes: {}, customQuestions: [] };
 
 try {
   let loaded = StorageSafe.get(STORE);
   if (loaded) STAFF = JSON.parse(loaded);
+  if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
 } catch(e) {}
 
 (async () => {
@@ -549,9 +608,11 @@ try {
     let idbData = await idbGet(STORE);
     if (idbData && (!STAFF.classes || Object.keys(STAFF.classes).length === 0)) {
       STAFF = JSON.parse(idbData);
+      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
       refreshTitle();
       renderClassButtons();
       blank();
+      syncCustomQuestions();
     }
   } catch(e) {}
 })();
@@ -575,7 +636,7 @@ let CLASSES = {};
 let TEACHERS = {};
 let currentClass = null;
 let absent = new Set();
-let called = new Set(); // Stores students who have already been randomly chosen & crossed out
+let called = new Set();
 let groups = [];
 let chosen = null;
 
@@ -888,21 +949,17 @@ function randomStudent() {
   const present = CLASSES[currentClass].filter(n => !absent.has(n));
   if (!present.length) return;
 
-  // Cross out previously chosen student
   if (chosen) {
     called.add(chosen);
   }
 
-  // Find remaining uncalled students
   let pool = present.filter(n => !called.has(n));
 
-  // If everyone has been called, reset the cycle
   if (pool.length === 0) {
     called.clear();
     pool = present;
   }
 
-  // Pick random from remaining
   chosen = pool[Math.floor(Math.random() * pool.length)];
 
   if (room.style.display === 'block') {
@@ -916,7 +973,7 @@ function randomStudent() {
   status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
 }
 
-/* --- 90 Categorized Discussion Questions --- */
+/* --- Categorized Discussion Questions Pool --- */
 const QUESTION_CATEGORIES = {
   maths: {
     label: "Maths Related",
@@ -1025,8 +1082,25 @@ const QUESTION_CATEGORIES = {
       "If you had to explain what makes you uniquely you in three words, what would they be?",
       "What is one legacy or positive impression you want to leave behind in your school or college?"
     ]
+  },
+  custom: {
+    label: "My Questions",
+    icon: "⭐",
+    questions: []
   }
 };
+
+function syncCustomQuestions() {
+  QUESTION_CATEGORIES.custom.questions = STAFF.customQuestions || [];
+  if (currentCategory === 'custom') {
+    populateQuestionDropdown('custom', 0);
+    if (QUESTION_CATEGORIES.custom.questions.length > 0) {
+      setQuestion('custom', 0);
+    } else {
+      qs('#discussionQuestion').textContent = "No custom questions yet. Click the ➕ button to add your own!";
+    }
+  }
+}
 
 let currentCategory = 'maths';
 let lastQuestionIdx = -1;
@@ -1035,12 +1109,22 @@ function populateQuestionDropdown(catKey, selectedIdx = 0) {
   const cat = QUESTION_CATEGORIES[catKey];
   const sel = qs('#questionSelect');
   sel.innerHTML = '';
+  
+  if (!cat.questions || cat.questions.length === 0) {
+    let opt = document.createElement('option');
+    opt.value = "";
+    opt.textContent = "(No questions added yet)";
+    sel.appendChild(opt);
+    return;
+  }
+
   cat.questions.forEach((q, idx) => {
     let opt = document.createElement('option');
     opt.value = idx;
     opt.textContent = `${idx + 1}. ${q.length > 78 ? q.slice(0, 75) + '...' : q}`;
     sel.appendChild(opt);
   });
+
   if (selectedIdx >= 0 && selectedIdx < cat.questions.length) {
     sel.value = selectedIdx;
   }
@@ -1048,13 +1132,22 @@ function populateQuestionDropdown(catKey, selectedIdx = 0) {
 
 function setQuestion(catKey, idx) {
   lastQuestionIdx = idx;
-  const q = QUESTION_CATEGORIES[catKey].questions[idx];
+  const list = QUESTION_CATEGORIES[catKey].questions;
+  if (!list || !list.length) {
+    qs('#discussionQuestion').textContent = "No questions found in this category. Click the ➕ button to add your own!";
+    return;
+  }
+  const q = list[idx] || list[0];
   qs('#discussionQuestion').textContent = q;
   qs('#questionSelect').value = idx;
 }
 
 function pickRandomQuestion() {
   const cat = QUESTION_CATEGORIES[currentCategory];
+  if (!cat.questions || !cat.questions.length) {
+    qs('#discussionQuestion').textContent = "No questions in this category yet. Click ➕ to add some!";
+    return;
+  }
   let choices = cat.questions.map((_, i) => i).filter(i => i !== lastQuestionIdx);
   if (!choices.length) choices = [0];
   const idx = choices[Math.floor(Math.random() * choices.length)];
@@ -1073,15 +1166,99 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
 
 // Dropdown question selection handler
 qs('#questionSelect').onchange = (e) => {
+  if (e.target.value === "") return;
   const idx = +e.target.value;
   setQuestion(currentCategory, idx);
 };
 
 qs('#newQuestion').onclick = pickRandomQuestion;
 
-// Initialize discussion questions
+// Initial sync
+syncCustomQuestions();
 populateQuestionDropdown('maths', 0);
 setQuestion('maths', 0);
+
+/* --- Custom Questions Modal Handlers --- */
+function refreshCustomModalCount() {
+  const list = qs('#customQuestionsInput').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  qs('#customQuestionsCount').textContent = `${list.length} question${list.length === 1 ? '' : 's'} listed`;
+}
+
+qs('#openCustomQuestionsModal').onclick = () => {
+  qs('#customQuestionsInput').value = (STAFF.customQuestions || []).join('\n');
+  refreshCustomModalCount();
+  qs('#customQuestionsDialog').style.display = 'flex';
+};
+
+qs('#customQuestionsInput').oninput = refreshCustomModalCount;
+
+qs('#btnCloseCustomDialog').onclick = () => {
+  qs('#customQuestionsDialog').style.display = 'none';
+};
+
+qs('#btnClearCustomQuestions').onclick = () => {
+  qs('#customQuestionsInput').value = '';
+  refreshCustomModalCount();
+};
+
+qs('#btnSaveCustomQuestions').onclick = () => {
+  const list = qs('#customQuestionsInput').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  STAFF.customQuestions = list;
+  persist();
+  syncCustomQuestions();
+  alert(`Saved ${list.length} custom question${list.length === 1 ? '' : 's'}!`);
+  qs('#customQuestionsDialog').style.display = 'none';
+};
+
+qs('#btnExportCustom').onclick = () => {
+  const list = (STAFF.customQuestions || []);
+  const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'pairup-custom-questions.json';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+qs('#btnImportCustom').onclick = () => qs('#customFileInput').click();
+
+qs('#customFileInput').onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    try {
+      let imported = [];
+      const text = evt.target.result.trim();
+      if (text.startsWith('[') || text.startsWith('{')) {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          imported = parsed.map(x => String(x).trim()).filter(Boolean);
+        } else if (parsed && parsed.customQuestions) {
+          imported = parsed.customQuestions.map(x => String(x).trim()).filter(Boolean);
+        }
+      } else {
+        // Plain text file (one line per question)
+        imported = text.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      }
+
+      if (imported.length > 0) {
+        STAFF.customQuestions = imported;
+        persist();
+        qs('#customQuestionsInput').value = imported.join('\n');
+        refreshCustomModalCount();
+        syncCustomQuestions();
+        alert(`Successfully imported ${imported.length} custom questions!`);
+      } else {
+        alert('No questions found in this file.');
+      }
+    } catch(err) {
+      alert('Could not parse file. Make sure it is a valid JSON array or text file.');
+    }
+  };
+  reader.readAsText(file);
+};
 
 /* --- Timer --- */
 let interval;
@@ -1350,7 +1527,7 @@ qs('#saveClass').onclick = () => {
   renderSaved();
 };
 
-/* --- Backup and Restore Actions --- */
+/* --- Backup and Restore Classes Actions --- */
 qs('#btnExport').onclick = () => {
   const blob = new Blob([JSON.stringify(STAFF, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1372,10 +1549,12 @@ qs('#fileInput').onchange = (e) => {
       const data = JSON.parse(evt.target.result);
       if (data && typeof data === 'object' && data.classes) {
         STAFF = data;
+        if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
         persist();
         refreshTitle();
         renderClassButtons();
         renderSaved();
+        syncCustomQuestions();
         blank();
         alert('Classes imported successfully!');
       } else {
@@ -1408,10 +1587,12 @@ qs('#btnPaste').onclick = () => {
     const data = JSON.parse(text.trim());
     if (data && typeof data === 'object' && data.classes) {
       STAFF = data;
+      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
       persist();
       refreshTitle();
       renderClassButtons();
       renderSaved();
+      syncCustomQuestions();
       blank();
       alert('Classes restored successfully!');
     } else {
