@@ -24,8 +24,6 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  transition: background 0.4s ease, color 0.4s ease;
-  overflow-x: hidden;
 }
 main {
   position: relative;
@@ -36,12 +34,10 @@ main {
   border-radius: 20px;
   padding: 22px;
   box-shadow: 0 16px 45px #14203a12;
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-  z-index: 2;
 }
 h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
 .sub { color: var(--muted); margin: 4px 0 16px; font-size: 0.95rem; }
-.class-picker { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; position: relative; z-index: 5; }
+.class-picker { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
 .class-btn {
   min-width: 140px;
   display: flex;
@@ -61,7 +57,7 @@ h1 { margin: 0; font-size: clamp(1.8rem, 3.8vw, 3rem); }
 .class-code { font-size: 1.05rem; font-weight: 900; }
 .teacher-names { font-size: .72rem; font-weight: 700; opacity: .72; white-space: nowrap; }
 .class-btn.active { outline: 4px solid var(--ink); outline-offset: 2px; transform: translateY(-1px); }
-.controls { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; position: relative; z-index: 5; }
+.controls { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
 .empty-state { width: 100%; padding: 50px 20px; text-align: center; color: var(--muted); font-size: 1.15rem; font-weight: 700; }
 label { font-size: .85rem; font-weight: 800; }
 select, button { height: 44px; border-radius: 10px; border: 1px solid var(--line); font: inherit; font-weight: 750; }
@@ -69,9 +65,8 @@ select { display: block; margin-top: 4px; padding: 0 12px; background: #fff; }
 button { padding: 0 16px; background: var(--ink); color: #fff; cursor: pointer; }
 .secondary { background: #fff; color: var(--ink); }
 button:disabled { opacity: .4; cursor: not-allowed; }
-#status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; position: relative; z-index: 5; }
-#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; position: relative; z-index: 5; }
-
+#status { min-height: 25px; margin: 14px 0 6px; color: var(--muted); font-weight: 650; font-size: 0.95rem; }
+#stage { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 16px 0; }
 .student {
   min-width: 130px;
   min-height: 76px;
@@ -83,11 +78,10 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   background: var(--c);
   border: 3px solid var(--ink);
   font-size: 1.25rem;
-  font-weight: 900;
-  color: #111827 !important;
+  font-weight: 850;
   box-shadow: 0 5px 14px #14203a18;
   user-select: none;
-  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease, filter .2s ease;
+  transition: opacity .2s ease, filter .2s ease;
 }
 .student.selectable { cursor: pointer; }
 .student.absent { filter: grayscale(1); opacity: .3; text-decoration: line-through; }
@@ -109,11 +103,11 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   filter: none !important;
 }
 .dice { font-size: 1.3rem; min-width: 50px; padding: 0 10px; }
-.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; position: relative; z-index: 5; }
+.paircard { border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 290px; text-align: center; background: #fafbfc; }
 .pairlabel, .timer-label, .desk-label { font-size: .72rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
 .people, .desk-people { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .pairlabel { margin-bottom: 8px; }
-.timer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line); position: relative; z-index: 5; }
+.timer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; padding-top: 16px; border-top: 1px solid var(--line); }
 .room-timer {
   position: absolute;
   right: 20px;
@@ -136,10 +130,10 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 .room-timer-buttons button { width: 100%; padding: 4px; height: 30px; background: #fff; color: var(--ink); font-size: .78rem; }
 
 /* Discussion Questions Section */
-.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); position: relative; z-index: 5; }
+.discussion { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 16px; padding: 18px; border-top: 1px solid var(--line); }
 .discussion-title { font-size: .78rem; color: var(--muted); font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
-.discussion-controls { width: min(920px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.discussion-controls { width: min(900px, 100%); display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.category-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
 .cat-btn {
   height: 38px;
   padding: 0 14px;
@@ -153,24 +147,6 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   transition: all .15s ease;
 }
 .cat-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
-
-.custom-cat-group { display: inline-flex; align-items: center; gap: 4px; }
-.cat-plus-btn {
-  height: 38px;
-  width: 38px;
-  padding: 0;
-  display: inline-grid;
-  place-items: center;
-  font-size: 0.95rem;
-  background: #fff;
-  color: var(--brand);
-  border: 2px solid var(--line);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.cat-plus-btn:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
-
 .question-pickers { width: 100%; display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .dropdown-wrapper { flex: 1; min-width: 260px; max-width: 650px; }
 .dropdown-wrapper select { width: 100%; height: 42px; font-size: 0.88rem; border-radius: 10px; border: 2px solid var(--line); }
@@ -192,7 +168,6 @@ button:disabled { opacity: .4; cursor: not-allowed; }
   background-size: 32px 32px;
   overflow: hidden;
   touch-action: none;
-  z-index: 5;
 }
 #board {
   position: absolute;
@@ -229,250 +204,10 @@ button:disabled { opacity: .4; cursor: not-allowed; }
 }
 .desk:active { cursor: grabbing; }
 .desk .student { min-width: 82px; min-height: 48px; padding: 5px 8px; border-width: 2px; font-size: .86rem; }
-.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; position: relative; z-index: 5; }
+.hint { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 8px; }
 
-/* Top action bar buttons */
-.top-actions { position: absolute; right: 22px; top: 22px; display: flex; gap: 8px; align-items: center; z-index: 30; }
-.disco-toggle-btn {
-  background: linear-gradient(135deg, #f43f5e, #8b5cf6, #3b82f6);
-  color: #fff;
-  border: none;
-  box-shadow: 0 4px 12px #8b5cf644;
-  font-weight: 800;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.disco-toggle-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px #8b5cf666; }
-.music-btn {
-  background: #2e1065;
-  color: #f3e8ff;
-  border: 2px solid #a855f7;
-  font-weight: 750;
-}
-
-/* ========================================================
-   DISCO MODE STYLES & CONTAINED DANCE FLOOR
-======================================================== */
-body.disco-mode {
-  background: #06040e;
-  color: #f8fafc;
-}
-
-body.disco-mode main {
-  background: #0d0822;
-  border: 2px solid #a855f7;
-  box-shadow: 0 0 50px rgba(168, 85, 247, 0.4), inset 0 0 80px rgba(88, 28, 135, 0.4);
-  color: #f8fafc;
-}
-
-/* DANCE FLOOR CONTAINER: Fills the main box 100% and clips cleanly */
-#discoDanceFloor {
-  display: none;
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 1;
-}
-body.disco-mode #discoDanceFloor {
-  display: block;
-}
-
-/* Dance floor tiles filling the entire main card */
-.disco-floor-grid {
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(rgba(192, 132, 252, 0.16) 1.5px, transparent 1.5px),
-    linear-gradient(90deg, rgba(192, 132, 252, 0.16) 1.5px, transparent 1.5px),
-    radial-gradient(ellipse at 50% 25%, #221247 0%, #0d0722 65%, #060312 100%);
-  background-size: 44px 44px, 44px 44px, 100% 100%;
-}
-
-/* Expansive Ambient Beams contained inside the box */
-.disco-ambient-beams {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  width: 1600px;
-  height: 1600px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  background: 
-    conic-gradient(from 0deg at 50% 50%, 
-      transparent 0deg, rgba(236, 72, 153, 0.14) 20deg, transparent 40deg,
-      rgba(56, 189, 248, 0.14) 80deg, transparent 100deg,
-      rgba(251, 191, 36, 0.14) 150deg, transparent 170deg,
-      rgba(168, 85, 247, 0.14) 230deg, transparent 250deg,
-      rgba(52, 211, 153, 0.14) 310deg, transparent 330deg);
-  animation: sweepBeams 10s linear infinite;
-  mix-blend-mode: screen;
-  mask-image: radial-gradient(circle, black 20%, transparent 65%);
-  -webkit-mask-image: radial-gradient(circle, black 20%, transparent 65%);
-}
-
-body.disco-mode.spinning-fast .disco-ambient-beams {
-  animation: sweepBeams 0.7s linear infinite;
-  background: 
-    conic-gradient(from 0deg at 50% 50%, 
-      transparent 0deg, rgba(236, 72, 153, 0.35) 20deg, transparent 40deg,
-      rgba(56, 189, 248, 0.35) 80deg, transparent 100deg,
-      rgba(251, 191, 36, 0.35) 150deg, transparent 170deg,
-      rgba(168, 85, 247, 0.35) 230deg, transparent 250deg,
-      rgba(52, 211, 153, 0.35) 310deg, transparent 330deg);
-}
-
-@keyframes sweepBeams {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-body.disco-mode .sub { color: #d8b4fe; }
-
-/* SHARP, READABLE BLACK NAMES ON ALL CHIPS IN DISCO MODE */
-body.disco-mode .student {
-  color: #111827 !important;
-  font-weight: 900 !important;
-  border-color: #111827;
-  text-shadow: none !important;
-}
-body.disco-mode .class-btn {
-  color: #111827 !important;
-  border-color: #111827;
-}
-body.disco-mode .class-btn .teacher-names {
-  color: #374151 !important;
-}
-
-body.disco-mode .paircard {
-  background: rgba(23, 19, 51, 0.92);
-  border-color: #6b21a8;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-}
-body.disco-mode .pairlabel,
-body.disco-mode .timer-label,
-body.disco-mode .desk-label,
-body.disco-mode .discussion-title,
-body.disco-mode #status { color: #e9d5ff; }
-
-body.disco-mode .discussion-question {
-  background: rgba(25, 20, 56, 0.95);
-  border-color: #6b21a8;
-  color: #fdf4ff;
-  box-shadow: inset 0 0 25px #3b0764;
-}
-body.disco-mode .cat-btn {
-  background: #1c183d;
-  color: #e9d5ff;
-  border-color: #581c87;
-}
-body.disco-mode .cat-btn.active {
-  background: linear-gradient(135deg, #ec4899, #8b5cf6);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 0 14px #ec489966;
-}
-body.disco-mode .cat-plus-btn {
-  background: #1c183d;
-  color: #f472b6;
-  border-color: #581c87;
-}
-body.disco-mode button.secondary {
-  background: #1e1b40;
-  color: #f3e8ff;
-  border-color: #6b21a8;
-}
-body.disco-mode button.secondary:hover { background: #2e265c; }
-body.disco-mode select {
-  background: #191438;
-  color: #fdf4ff;
-  border-color: #6b21a8;
-}
-
-body.disco-mode #room {
-  border-color: #c084fc;
-  background: 
-    linear-gradient(rgba(147, 51, 234, 0.2) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(147, 51, 234, 0.2) 2px, transparent 2px),
-    radial-gradient(circle at 50% 0%, #3b0764 0%, #0a0618 80%);
-  background-size: 40px 40px, 40px 40px, 100% 100%;
-}
-body.disco-mode .desk {
-  background: #1b1638;
-  border-color: #7c3aed;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 10px rgba(124, 58, 237, 0.4);
-}
-
-/* Disco Ball Rig */
-#discoRig {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  margin: 4px auto 10px;
-  position: relative;
-  z-index: 10;
-}
-body.disco-mode #discoRig { display: flex; }
-
-.disco-string {
-  width: 2px;
-  height: 22px;
-  background: linear-gradient(#cbd5e1, #94a3b8);
-}
-.disco-ball {
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  position: relative;
-  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #cbd5e1 35%, #64748b 70%, #1e293b 100%);
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.9), 0 10px 40px rgba(168, 85, 247, 0.6);
-  animation: spinBall 6s linear infinite;
-  overflow: hidden;
-  z-index: 12;
-}
-body.disco-mode.spinning-fast .disco-ball {
-  animation: spinBall 0.4s linear infinite;
-  box-shadow: 0 0 50px #f43f5e, 0 0 80px #38bdf8;
-}
-@keyframes spinBall {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.disco-ball::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
-  background-size: 8px 8px;
-  mix-blend-mode: overlay;
-}
-
-.student.disco-lit {
-  transform: scale(1.22);
-  box-shadow: 0 0 35px #f43f5e, 0 0 70px rgba(236, 72, 153, 0.9);
-  outline: 4px solid #fff;
-  z-index: 10;
-  filter: brightness(1.2) saturate(1.3);
-}
-.student.disco-winner {
-  transform: scale(1.38);
-  box-shadow: 0 0 45px #fbbf24, 0 0 85px #f43f5e, 0 0 110px #38bdf8;
-  outline: 5px solid #fff;
-  z-index: 20;
-  animation: winnerGlow 0.5s ease-in-out infinite alternate;
-}
-@keyframes winnerGlow {
-  0% { filter: brightness(1.2) drop-shadow(0 0 15px #f43f5e); }
-  100% { filter: brightness(1.4) drop-shadow(0 0 35px #38bdf8); }
-}
-
-/* Modals */
-.modal-overlay {
+/* Modal Setup */
+#setupDialog.modal-overlay {
   position: fixed;
   inset: 0;
   background: #17203377;
@@ -483,12 +218,11 @@ body.disco-mode.spinning-fast .disco-ball {
   padding: 10px;
   overflow: auto;
 }
-.setupbox {
+#setupDialog .setupbox {
   width: min(740px, 96vw);
   max-height: 94vh;
   overflow-y: auto;
   background: #fff;
-  color: var(--ink);
   border-radius: 18px;
   padding: 18px 22px;
   box-shadow: 0 20px 70px #17203355;
@@ -496,14 +230,16 @@ body.disco-mode.spinning-fast .disco-ball {
 }
 .field { margin: 10px 0; }
 .field label { display: block; font-weight: 850; margin-bottom: 4px; font-size: 0.85rem; }
-.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 2px solid #dce2ea; border-radius: 8px; font: inherit; background:#fff; color:var(--ink); }
+.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 2px solid #dce2ea; border-radius: 8px; font: inherit; }
 .field textarea { min-height: 110px; resize: vertical; }
 .savedrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; background: #f5f7fa; border-radius: 8px; margin: 6px 0; }
 .small { font-size: .8rem; color: #687386; }
 .modalbuttons { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
 .backup-bar { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; }
 .backup-bar button { height: 34px; font-size: .8rem; padding: 0 10px; }
+#staffSetup { position: absolute; right: 22px; top: 22px; }
 
+/* Separation rules block */
 .editor-card {
   background: #fdfefe;
   border: 2px solid #dce2ea;
@@ -579,27 +315,9 @@ body.disco-mode.spinning-fast .disco-ball {
 </head>
 <body>
 <main>
-  <!-- DANCE FLOOR LAYER: Contained inside the main box with clean edge clipping -->
-  <div id="discoDanceFloor">
-    <div class="disco-floor-grid"></div>
-    <div class="disco-ambient-beams"></div>
-  </div>
-
   <h1 id="mainTitle">Pair Up!</h1>
-  
-  <div class="top-actions">
-    <button id="discoMusicToggle" class="music-btn" type="button" style="display:none;" title="Mute/Unmute Disco Music">🎵 Music: ON</button>
-    <button id="discoToggle" class="disco-toggle-btn" type="button" title="Toggle Disco Mode">🪩 Disco Mode</button>
-    <button id="staffSetup" class="secondary" type="button">⚙️ Staff Setup</button>
-  </div>
-
+  <button id="staffSetup" class="secondary" type="button">⚙️ Staff Setup</button>
   <p class="sub">Choose a class, mark absences, then randomly pair the students.</p>
-
-  <!-- Hanging Spinning Disco Ball -->
-  <div id="discoRig">
-    <div class="disco-string"></div>
-    <div class="disco-ball"></div>
-  </div>
 
   <div class="class-picker" id="classPicker"></div>
 
@@ -634,10 +352,6 @@ body.disco-mode.spinning-fast .disco-ball {
         <button class="cat-btn active" data-cat="maths" type="button">📐 Maths Related</button>
         <button class="cat-btn" data-cat="general" type="button">📚 Study &amp; College Life</button>
         <button class="cat-btn" data-cat="individual" type="button">🌱 Personal &amp; Mindset</button>
-        <div class="custom-cat-group">
-          <button class="cat-btn" data-cat="custom" type="button">⭐ My Questions</button>
-          <button id="openCustomQuestionsModal" class="cat-plus-btn" type="button" title="Add or edit your own questions">➕</button>
-        </div>
       </div>
 
       <div class="question-pickers">
@@ -666,12 +380,11 @@ body.disco-mode.spinning-fast .disco-ball {
 
   <div id="hint" class="hint"></div>
 
-  <!-- STAFF SETUP MODAL -->
   <div id="setupDialog" class="modal-overlay" style="display:none">
     <div class="setupbox" id="setupScrollBox">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 style="margin:0;">Staff Setup</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">v3.0</span>
+        <span class="small" style="font-weight:bold; color:var(--brand);">v2.5</span>
       </div>
 
       <div class="field" style="margin-top:12px;">
@@ -724,7 +437,7 @@ body.disco-mode.spinning-fast .disco-ball {
 
       <hr style="margin:16px 0; border:none; border-top:1px solid var(--line);">
 
-      <h4 style="margin:0 0 6px 0;">Backup &amp; Restore Classes</h4>
+      <h4 style="margin:0 0 6px 0;">Backup &amp; Restore</h4>
       <div class="small" style="margin-bottom:8px">Google Sites can reset embedded data on refresh. Save a backup to guarantee you never lose your classes:</div>
       <div class="backup-bar">
         <button id="btnExport" class="secondary" type="button">📥 Download File</button>
@@ -739,50 +452,10 @@ body.disco-mode.spinning-fast .disco-ball {
       </div>
     </div>
   </div>
-
-  <!-- CUSTOM QUESTIONS MODAL -->
-  <div id="customQuestionsDialog" class="modal-overlay" style="display:none">
-    <div class="setupbox">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2 style="margin:0;">⭐ My Custom Questions</h2>
-        <span class="small" style="font-weight:bold; color:var(--brand);">Custom Question Pool</span>
-      </div>
-      <p class="small" style="margin:6px 0 14px 0;">Add your own custom discussion questions to use during lessons.</p>
-
-      <div class="field">
-        <label for="customQuestionsInput">Questions — one per line</label>
-        <textarea id="customQuestionsInput" style="min-height:170px;" placeholder="What was the key insight from yesterday's problem?&#10;How would you explain today's method to a friend?&#10;What is one common pitfall to avoid with this technique?"></textarea>
-        <div class="small" id="customQuestionsCount">0 questions listed</div>
-      </div>
-
-      <div class="modalbuttons" style="justify-content: flex-start; margin-top:8px;">
-        <button id="btnSaveCustomQuestions" type="button">Save Questions</button>
-        <button id="btnClearCustomQuestions" class="secondary" type="button">Clear</button>
-      </div>
-
-      <hr style="margin:16px 0; border:none; border-top:1px solid var(--line);">
-
-      <h4 style="margin:0 0 6px 0;">Backup &amp; Transfer Questions</h4>
-      <div class="small" style="margin-bottom:8px">Download your custom questions to transfer between devices or save a backup:</div>
-      <div class="backup-bar">
-        <button id="btnExportCustom" class="secondary" type="button">📥 Download Questions</button>
-        <button id="btnImportCustom" class="secondary" type="button">📤 Upload Questions</button>
-        <input type="file" id="customFileInput" accept=".json,.txt" style="display:none">
-      </div>
-
-      <div class="modalbuttons">
-        <button id="btnCloseCustomDialog" type="button">Done</button>
-      </div>
-    </div>
-  </div>
 </main>
 
 <script>
-/* ========================================================
-   GLOBAL HELPERS & MULTI-ENGINE STORAGE
-======================================================== */
-const qs = x => document.querySelector(x);
-
+/* --- Multi-Engine Persistence for Google Sites & iframes --- */
 const DB_NAME = 'PairUpDB';
 const STORE_NAME = 'PairUpStore';
 
@@ -864,185 +537,34 @@ const StorageSafe = {
 };
 
 const STORE = 'pairup-staff-v1';
-let STAFF = { teacher: "", classes: {}, customQuestions: [], discoMode: false, discoMusic: true };
+let STAFF = { teacher: "", classes: {} };
 
 try {
   let loaded = StorageSafe.get(STORE);
   if (loaded) STAFF = JSON.parse(loaded);
-  if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
-  if (typeof STAFF.discoMusic === 'undefined') STAFF.discoMusic = true;
 } catch(e) {}
+
+(async () => {
+  try {
+    let idbData = await idbGet(STORE);
+    if (idbData && (!STAFF.classes || Object.keys(STAFF.classes).length === 0)) {
+      STAFF = JSON.parse(idbData);
+      refreshTitle();
+      renderClassButtons();
+      blank();
+    }
+  } catch(e) {}
+})();
 
 const persist = () => {
   StorageSafe.set(STORE, JSON.stringify(STAFF));
 };
 
-/* ========================================================
-   DISCO MODE SOUND & BACKGROUND MUSIC ENGINE
-======================================================== */
-let audioCtx = null;
-function getAudioCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  return audioCtx;
-}
-
-function playDiscoBlip(freq = 520) {
-  try {
-    let ctx = getAudioCtx();
-    if (!ctx) return;
-    let osc = ctx.createOscillator();
-    let gain = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + 0.04);
-    gain.gain.setValueAtTime(0.04, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  } catch(e) {}
-}
-
-function playDiscoWinnerSound() {
-  try {
-    let ctx = getAudioCtx();
-    if (!ctx) return;
-    const chords = [523.25, 659.25, 783.99, 1046.50];
-    chords.forEach((freq, idx) => {
-      let osc = ctx.createOscillator();
-      let gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      let start = ctx.currentTime + (idx * 0.06);
-      gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(0.06, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.45);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(start);
-      osc.stop(start + 0.45);
-    });
-  } catch(e) {}
-}
-
-/* Synthesizer Disco Music Loop (120 BPM) */
-let musicTimer = null;
-let musicStep = 0;
-const bassNotes = [
-  73.42, 146.83, 73.42, 146.83,
-  87.31, 174.61, 87.31, 174.61,
-  98.00, 196.00, 98.00, 196.00,
-  110.00, 220.00, 110.00, 220.00
-];
-
-function triggerDiscoMusicBeat() {
-  if (!STAFF.discoMode || !STAFF.discoMusic) return;
-  try {
-    let ctx = getAudioCtx();
-    if (!ctx) return;
-    let t = ctx.currentTime;
-
-    // Kick Drum
-    if (musicStep % 4 === 0) {
-      let osc = ctx.createOscillator();
-      let gain = ctx.createGain();
-      osc.frequency.setValueAtTime(140, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.08);
-      gain.gain.setValueAtTime(0.045, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.09);
-    }
-
-    // Hi-Hat
-    if (musicStep % 4 === 2) {
-      let osc = ctx.createOscillator();
-      let gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(12000, t);
-      gain.gain.setValueAtTime(0.015, t);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.04);
-    }
-
-    // Bassline
-    let bassFreq = bassNotes[musicStep % bassNotes.length];
-    let bassOsc = ctx.createOscillator();
-    let bassGain = ctx.createGain();
-    bassOsc.type = 'sawtooth';
-    bassOsc.frequency.setValueAtTime(bassFreq, t);
-    bassGain.gain.setValueAtTime(0.02, t);
-    bassGain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
-    bassOsc.connect(bassGain);
-    bassGain.connect(ctx.destination);
-    bassOsc.start(t);
-    bassOsc.stop(t + 0.11);
-
-    musicStep = (musicStep + 1) % 16;
-  } catch(e) {}
-}
-
-function startDiscoMusic() {
-  stopDiscoMusic();
-  if (STAFF.discoMode && STAFF.discoMusic) {
-    musicStep = 0;
-    musicTimer = setInterval(triggerDiscoMusicBeat, 125);
-  }
-}
-
-function stopDiscoMusic() {
-  if (musicTimer) {
-    clearInterval(musicTimer);
-    musicTimer = null;
-  }
-}
-
-const discoToggle = qs('#discoToggle');
-const discoMusicToggle = qs('#discoMusicToggle');
-
-function applyDiscoMode() {
-  const isDisco = !!STAFF.discoMode;
-  document.body.classList.toggle('disco-mode', isDisco);
-  discoToggle.textContent = isDisco ? '🪩 Exit Disco' : '🪩 Disco Mode';
-  discoMusicToggle.style.display = isDisco ? 'inline-block' : 'none';
-  discoMusicToggle.textContent = STAFF.discoMusic ? '🎵 Music: ON' : '🔇 Music: OFF';
-
-  if (isDisco) {
-    startDiscoMusic();
-  } else {
-    stopDiscoMusic();
-  }
-}
-
-discoToggle.onclick = () => {
-  STAFF.discoMode = !STAFF.discoMode;
-  persist();
-  applyDiscoMode();
-};
-
-discoMusicToggle.onclick = () => {
-  STAFF.discoMusic = !STAFF.discoMusic;
-  persist();
-  applyDiscoMode();
-};
-
-/* ========================================================
-   MAIN APPLICATION STATE & SELECTION
-======================================================== */
+/* --- Main App Code --- */
 const colours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CDEFE5','#CFE8FF','#D9DCFF','#E8D5FF','#F6D1EA','#FFD9C7','#E2F0CB','#BFE3E0','#C9DAF8','#D9D2E9','#F4CCCC','#FCE5CD','#FFF2CC','#D9EAD3','#D0E0E3','#CFE2F3'];
 const classColours = ['#FFD6D6','#FFE6B8','#FFF3B0','#DDF4C7','#CFE8FF','#E8D5FF'];
 
+const qs = x => document.querySelector(x);
 const stage = qs('#stage'), room = qs('#room'), status = qs('#status');
 const arrange = qs('#arrange'), back = qs('#back'), reset = qs('#reset');
 const timer = qs('#timer'), clock = qs('#clock');
@@ -1053,10 +575,9 @@ let CLASSES = {};
 let TEACHERS = {};
 let currentClass = null;
 let absent = new Set();
-let called = new Set();
+let called = new Set(); // Stores students who have already been randomly chosen & crossed out
 let groups = [];
 let chosen = null;
-let isRouletteSpinning = false;
 
 let editingBannedPairs = new Set();
 
@@ -1133,13 +654,11 @@ function chip(n, small = false, click = false) {
     + (isCalled && !isChosen ? ' called' : '')
     + (isChosen ? ' chosen' : '');
 
-  e.dataset.name = n;
   e.textContent = n;
   e.style.setProperty('--c', colours[(i >= 0 ? i : 0) % colours.length]);
   
   if (click) {
     e.onclick = () => {
-      if (isRouletteSpinning) return;
       if (absent.has(n)) {
         absent.delete(n);
       } else {
@@ -1364,93 +883,40 @@ function clearGroups() {
   status.textContent = `${CLASSES[currentClass].length - absent.size} present — groupings cleared.`;
 }
 
-/* --- Random Student Picker with Disco Ball Light-Cycling Roulette --- */
+/* --- Random Student Picker with Strikethroughs --- */
 function randomStudent() {
-  if (isRouletteSpinning) return;
-
   const present = CLASSES[currentClass].filter(n => !absent.has(n));
   if (!present.length) return;
 
+  // Cross out previously chosen student
   if (chosen) {
     called.add(chosen);
   }
 
+  // Find remaining uncalled students
   let pool = present.filter(n => !called.has(n));
 
+  // If everyone has been called, reset the cycle
   if (pool.length === 0) {
     called.clear();
     pool = present;
   }
 
-  const targetWinner = pool[Math.floor(Math.random() * pool.length)];
+  // Pick random from remaining
+  chosen = pool[Math.floor(Math.random() * pool.length)];
 
-  if (!STAFF.discoMode) {
-    chosen = targetWinner;
-    if (room.style.display === 'block') classroom();
-    else if (groups.length) pairs();
-    else roster();
-    status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
-    return;
+  if (room.style.display === 'block') {
+    classroom();
+  } else if (groups.length) {
+    pairs();
+  } else {
+    roster();
   }
 
-  isRouletteSpinning = true;
-  qs('#dice').disabled = true;
-  document.body.classList.add('spinning-fast');
-
-  const visibleChips = [...document.querySelectorAll('.student:not(.absent)')];
-  let availableChips = visibleChips.filter(c => pool.includes(c.dataset.name));
-  if (!availableChips.length) availableChips = visibleChips;
-
-  let currentIdx = 0;
-  let delay = 65;
-  let totalSteps = 26 + Math.floor(Math.random() * 8);
-  let step = 0;
-
-  function runRoulette() {
-    visibleChips.forEach(c => {
-      c.classList.remove('disco-lit', 'disco-winner');
-    });
-
-    const chipElem = availableChips[currentIdx % availableChips.length];
-    if (chipElem) {
-      chipElem.classList.add('disco-lit');
-      playDiscoBlip(480 + (currentIdx % 8) * 45);
-    }
-
-    currentIdx++;
-    step++;
-
-    if (step < totalSteps) {
-      if (step > totalSteps - 10) {
-        delay += 32;
-      }
-      setTimeout(runRoulette, delay);
-    } else {
-      chosen = targetWinner;
-      document.body.classList.remove('spinning-fast');
-
-      if (room.style.display === 'block') classroom();
-      else if (groups.length) pairs();
-      else roster();
-
-      const finalChip = [...document.querySelectorAll('.student')].find(c => c.dataset.name === chosen);
-      if (finalChip) {
-        finalChip.classList.add('disco-winner');
-      }
-
-      playDiscoWinnerSound();
-      status.textContent = `🪩 Disco Winner: ${chosen} (${called.size + 1}/${present.length} called)`;
-      isRouletteSpinning = false;
-      qs('#dice').disabled = false;
-    }
-  }
-
-  runRoulette();
+  status.textContent = `Random student: ${chosen} (${called.size + 1}/${present.length} called)`;
 }
 
-/* ========================================================
-   DISCUSSION QUESTIONS POOL (90 + Custom)
-======================================================== */
+/* --- 90 Categorized Discussion Questions --- */
 const QUESTION_CATEGORIES = {
   maths: {
     label: "Maths Related",
@@ -1559,25 +1025,8 @@ const QUESTION_CATEGORIES = {
       "If you had to explain what makes you uniquely you in three words, what would they be?",
       "What is one legacy or positive impression you want to leave behind in your school or college?"
     ]
-  },
-  custom: {
-    label: "My Questions",
-    icon: "⭐",
-    questions: []
   }
 };
-
-function syncCustomQuestions() {
-  QUESTION_CATEGORIES.custom.questions = STAFF.customQuestions || [];
-  if (currentCategory === 'custom') {
-    populateQuestionDropdown('custom', 0);
-    if (QUESTION_CATEGORIES.custom.questions.length > 0) {
-      setQuestion('custom', 0);
-    } else {
-      qs('#discussionQuestion').textContent = "No custom questions yet. Click the ➕ button to add your own!";
-    }
-  }
-}
 
 let currentCategory = 'maths';
 let lastQuestionIdx = -1;
@@ -1586,22 +1035,12 @@ function populateQuestionDropdown(catKey, selectedIdx = 0) {
   const cat = QUESTION_CATEGORIES[catKey];
   const sel = qs('#questionSelect');
   sel.innerHTML = '';
-  
-  if (!cat.questions || cat.questions.length === 0) {
-    let opt = document.createElement('option');
-    opt.value = "";
-    opt.textContent = "(No questions added yet)";
-    sel.appendChild(opt);
-    return;
-  }
-
   cat.questions.forEach((q, idx) => {
     let opt = document.createElement('option');
     opt.value = idx;
     opt.textContent = `${idx + 1}. ${q.length > 78 ? q.slice(0, 75) + '...' : q}`;
     sel.appendChild(opt);
   });
-
   if (selectedIdx >= 0 && selectedIdx < cat.questions.length) {
     sel.value = selectedIdx;
   }
@@ -1609,28 +1048,20 @@ function populateQuestionDropdown(catKey, selectedIdx = 0) {
 
 function setQuestion(catKey, idx) {
   lastQuestionIdx = idx;
-  const list = QUESTION_CATEGORIES[catKey].questions;
-  if (!list || !list.length) {
-    qs('#discussionQuestion').textContent = "No questions found in this category. Click the ➕ button to add your own!";
-    return;
-  }
-  const q = list[idx] || list[0];
+  const q = QUESTION_CATEGORIES[catKey].questions[idx];
   qs('#discussionQuestion').textContent = q;
   qs('#questionSelect').value = idx;
 }
 
 function pickRandomQuestion() {
   const cat = QUESTION_CATEGORIES[currentCategory];
-  if (!cat.questions || !cat.questions.length) {
-    qs('#discussionQuestion').textContent = "No questions in this category yet. Click ➕ to add some!";
-    return;
-  }
   let choices = cat.questions.map((_, i) => i).filter(i => i !== lastQuestionIdx);
   if (!choices.length) choices = [0];
   const idx = choices[Math.floor(Math.random() * choices.length)];
   setQuestion(currentCategory, idx);
 }
 
+// Category tabs click handler
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
@@ -1640,98 +1071,19 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   };
 });
 
+// Dropdown question selection handler
 qs('#questionSelect').onchange = (e) => {
-  if (e.target.value === "") return;
   const idx = +e.target.value;
   setQuestion(currentCategory, idx);
 };
 
 qs('#newQuestion').onclick = pickRandomQuestion;
 
-/* --- Custom Questions Modal Handlers --- */
-function refreshCustomModalCount() {
-  const list = qs('#customQuestionsInput').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-  qs('#customQuestionsCount').textContent = `${list.length} question${list.length === 1 ? '' : 's'} listed`;
-}
+// Initialize discussion questions
+populateQuestionDropdown('maths', 0);
+setQuestion('maths', 0);
 
-qs('#openCustomQuestionsModal').onclick = () => {
-  qs('#customQuestionsInput').value = (STAFF.customQuestions || []).join('\n');
-  refreshCustomModalCount();
-  qs('#customQuestionsDialog').style.display = 'flex';
-};
-
-qs('#customQuestionsInput').oninput = refreshCustomModalCount;
-
-qs('#btnCloseCustomDialog').onclick = () => {
-  qs('#customQuestionsDialog').style.display = 'none';
-};
-
-qs('#btnClearCustomQuestions').onclick = () => {
-  qs('#customQuestionsInput').value = '';
-  refreshCustomModalCount();
-};
-
-qs('#btnSaveCustomQuestions').onclick = () => {
-  const list = qs('#customQuestionsInput').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-  STAFF.customQuestions = list;
-  persist();
-  syncCustomQuestions();
-  alert(`Saved ${list.length} custom question${list.length === 1 ? '' : 's'}!`);
-  qs('#customQuestionsDialog').style.display = 'none';
-};
-
-qs('#btnExportCustom').onclick = () => {
-  const list = (STAFF.customQuestions || []);
-  const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'pairup-custom-questions.json';
-  a.click();
-  URL.revokeObjectURL(url);
-};
-
-qs('#btnImportCustom').onclick = () => qs('#customFileInput').click();
-
-qs('#customFileInput').onchange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (evt) => {
-    try {
-      let imported = [];
-      const text = evt.target.result.trim();
-      if (text.startsWith('[') || text.startsWith('{')) {
-        const parsed = JSON.parse(text);
-        if (Array.isArray(parsed)) {
-          imported = parsed.map(x => String(x).trim()).filter(Boolean);
-        } else if (parsed && parsed.customQuestions) {
-          imported = parsed.customQuestions.map(x => String(x).trim()).filter(Boolean);
-        }
-      } else {
-        imported = text.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-      }
-
-      if (imported.length > 0) {
-        STAFF.customQuestions = imported;
-        persist();
-        qs('#customQuestionsInput').value = imported.join('\n');
-        refreshCustomModalCount();
-        syncCustomQuestions();
-        alert(`Successfully imported ${imported.length} custom questions!`);
-      } else {
-        alert('No questions found in this file.');
-      }
-    } catch(err) {
-      alert('Could not parse file. Make sure it is a valid JSON array or text file.');
-    }
-  };
-  reader.readAsText(file);
-};
-
-/* ========================================================
-   TIMER & CONTROLS
-======================================================== */
+/* --- Timer --- */
 let interval;
 function startTimer(m) {
   clearInterval(interval);
@@ -1801,9 +1153,7 @@ function refreshTitle() {
   document.title = qs('#mainTitle').textContent;
 }
 
-/* ========================================================
-   SEPARATION RULES & STAFF SETUP
-======================================================== */
+/* --- Separation Rules Setup UI --- */
 function getFormStudents() {
   return qs('#studentNames').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
 }
@@ -2000,7 +1350,7 @@ qs('#saveClass').onclick = () => {
   renderSaved();
 };
 
-/* --- Backup and Restore Classes Actions --- */
+/* --- Backup and Restore Actions --- */
 qs('#btnExport').onclick = () => {
   const blob = new Blob([JSON.stringify(STAFF, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -2022,13 +1372,10 @@ qs('#fileInput').onchange = (e) => {
       const data = JSON.parse(evt.target.result);
       if (data && typeof data === 'object' && data.classes) {
         STAFF = data;
-        if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
         persist();
         refreshTitle();
         renderClassButtons();
         renderSaved();
-        syncCustomQuestions();
-        applyDiscoMode();
         blank();
         alert('Classes imported successfully!');
       } else {
@@ -2061,13 +1408,10 @@ qs('#btnPaste').onclick = () => {
     const data = JSON.parse(text.trim());
     if (data && typeof data === 'object' && data.classes) {
       STAFF = data;
-      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
       persist();
       refreshTitle();
       renderClassButtons();
       renderSaved();
-      syncCustomQuestions();
-      applyDiscoMode();
       blank();
       alert('Classes restored successfully!');
     } else {
@@ -2078,30 +1422,9 @@ qs('#btnPaste').onclick = () => {
   }
 };
 
-/* ========================================================
-   INITIAL RUN & RESTORE
-======================================================== */
-(async () => {
-  try {
-    let idbData = await idbGet(STORE);
-    if (idbData && (!STAFF.classes || Object.keys(STAFF.classes).length === 0)) {
-      STAFF = JSON.parse(idbData);
-      if (!Array.isArray(STAFF.customQuestions)) STAFF.customQuestions = [];
-      refreshTitle();
-      renderClassButtons();
-      blank();
-      syncCustomQuestions();
-      applyDiscoMode();
-    }
-  } catch(e) {}
-})();
-
+// Initial run
 refreshTitle();
 renderClassButtons();
-applyDiscoMode();
-syncCustomQuestions();
-populateQuestionDropdown('maths', 0);
-setQuestion('maths', 0);
 blank();
 </script>
 </body>
